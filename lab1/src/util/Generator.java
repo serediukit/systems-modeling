@@ -11,4 +11,12 @@ public class Generator {
         }
         return numbers;
     }
+
+    public static ArrayList<Double> generateExpNumbers(int count, double lambda) {
+        ArrayList<Double> numbers = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            numbers.add(- (1 / lambda) * Math.log(Math.random()));
+        }
+        return numbers;
+    }
 }
