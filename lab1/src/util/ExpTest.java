@@ -1,5 +1,7 @@
 package util;
 
+import org.apache.commons.math3.analysis.function.Histogram;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,7 +14,7 @@ public class ExpTest {
     final static private ArrayList<Double> deletedColumns = new ArrayList<>();
 
     public ExpTest(String folder) {
-        for (double lambda = 0.5; lambda <= 2.5; lambda += 0.5) {
+        for (double lambda = .5; lambda <= 5.0; lambda += 1.5) {
             ArrayList<Double> expNumbers = Generator.generateExpNumbers(COUNT, lambda);
             saveListToFile(folder + "/ExpNumbers_lam=" + lambda + ".txt", expNumbers);
 
@@ -47,7 +49,27 @@ public class ExpTest {
             ArrayList<Double> expTheoretical = getTheoreticalExp(columns, lambda);
             saveListToFile(folder + "/ExpTheoretical_lam=" + lambda + ".txt", expTheoretical);
 
-            boolean isTrueHypothesis = testChiSquared(columns, countInColumns, lambda);
+            ArrayList<Double> centerOfColumns = getCenterColumns(columns);
+            ArrayList<Double> theoreticalForCentredColumns = getTheoreticalExp(centerOfColumns, lambda);
+            double chiSquared = getChiSquared(theoreticalForCentredColumns, countInColumns);
+            double chiSquaredCritical = ChiCritical.getChiSquaredCritical(1 - ALPHA, columns.size() - 1);
+
+            System.out.println();
+            System.out.println();
+
+            System.out.println("Лямбда: " + lambda);
+            System.out.println("Математичне сподівання: " + averageNum);
+            System.out.println("Дисперсія: " + dispersion);
+            System.out.println("Хі-квадрат: " + chiSquared);
+            System.out.println("Хі-квадрат критичне: " + chiSquaredCritical);
+
+            if (chiSquared <= chiSquaredCritical)
+                System.out.println("Розподіл відповідає - нульову гіпотезу не відхиляємо");
+            else
+                System.out.println("Розподіл не відповідає - нульову гіпотезу відхиляємо");
+
+            System.out.println();
+            System.out.println();
         }
     }
 
@@ -107,14 +129,6 @@ public class ExpTest {
         return theoreticalExp;
     }
 
-    private boolean testChiSquared(ArrayList<Double> columns, ArrayList<Integer> countInColumns, double lambda) {
-        ArrayList<Double> centerOfColumns = getCenterColumns(columns);
-        ArrayList<Double> theoreticalForCentredColumns = getTheoreticalExp(centerOfColumns, lambda);
-        double chiSquared = getChiSquared(theoreticalForCentredColumns, countInColumns);
-        double chiSquaredCritical = ChiCritical.getChiSquaredCritical(1 - ALPHA, columns.size() - 1);
-        return chiSquared <= chiSquaredCritical;
-    }
-
     private ArrayList<Double> getCenterColumns(ArrayList<Double> columns) {
         ArrayList<Double> centerOfColumns =  new ArrayList<>();
         for (int i = 0; i < columns.size() - 1;  i++) {
@@ -123,10 +137,12 @@ public class ExpTest {
         return centerOfColumns;
     }
 
-    private double getChiSquared(ArrayList<Double> theoretical, ArrayList<Integer> count) {
+    private double getChiSquared(ArrayList<Double> theoretical, ArrayList<Integer> statistic) {
+        System.out.println(theoretical);
+        System.out.println(statistic);
         double chiSquared = 0;
-        for (int i = 0; i < count.size(); i++) {
-            chiSquared += Math.pow((double) count.get(i) - theoretical.get(i), 2) / theoretical.get(i);
+        for (int i = 0; i < statistic.size(); i++) {
+            chiSquared += Math.pow((double) statistic.get(i) - theoretical.get(i), 2) / theoretical.get(i);
         }
         return chiSquared;
     }
