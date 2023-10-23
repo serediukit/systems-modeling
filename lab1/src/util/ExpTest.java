@@ -111,7 +111,7 @@ public class ExpTest {
         ArrayList<Double> centerOfColumns = getCenterColumns(columns);
         ArrayList<Double> theoreticalForCentredColumns = getTheoreticalExp(centerOfColumns, lambda);
         double chiSquared = getChiSquared(theoreticalForCentredColumns, countInColumns);
-        double chiSquaredCritical = getChiSquaredCritical(1 - ALPHA, columns.size() - 1);
+        double chiSquaredCritical = ChiCritical.getChiSquaredCritical(1 - ALPHA, columns.size() - 1);
         return chiSquared <= chiSquaredCritical;
     }
 
@@ -129,10 +129,6 @@ public class ExpTest {
             chiSquared += Math.pow((double) count.get(i) - theoretical.get(i), 2) / theoretical.get(i);
         }
         return chiSquared;
-    }
-
-    private double getChiSquaredCritical(double alpha, int degreesOfFreedom) {
-        return 1;
     }
 
     private void saveListToFile(String filepath, ArrayList<Double> numbers) {
