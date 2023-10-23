@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class ExpTest {
     final static private int COUNT = 10000;
-    final static private int COLUMNS = 50;
+    final static private int COLUMNS = 40;
     final static private double ALPHA = .05;
     final static private ArrayList<Double> deletedColumns = new ArrayList<>();
 
@@ -47,7 +47,7 @@ public class ExpTest {
             ArrayList<Double> expTheoretical = getTheoreticalExp(columns, lambda);
             saveListToFile(folder + "/ExpTheoretical_lam=" + lambda + ".txt", expTheoretical);
 
-            
+            boolean isTrueHypothesis = testChiSquared(columns, countInColumns, lambda);
         }
     }
 
@@ -105,6 +105,34 @@ public class ExpTest {
             theoreticalExp.add(lambda * Math.exp(-lambda * column));
         }
         return theoreticalExp;
+    }
+
+    private boolean testChiSquared(ArrayList<Double> columns, ArrayList<Integer> countInColumns, double lambda) {
+        ArrayList<Double> centerOfColumns = getCenterColumns(columns);
+        ArrayList<Double> theoreticalForCentredColumns = getTheoreticalExp(centerOfColumns, lambda);
+        double chiSquared = getChiSquared(theoreticalForCentredColumns, countInColumns);
+        double chiSquaredCritical = getChiSquaredCritical(1 - ALPHA, columns.size() - 1);
+        return chiSquared <= chiSquaredCritical;
+    }
+
+    private ArrayList<Double> getCenterColumns(ArrayList<Double> columns) {
+        ArrayList<Double> centerOfColumns =  new ArrayList<>();
+        for (int i = 0; i < columns.size() - 1;  i++) {
+            centerOfColumns.add((columns.get(i) + columns.get(i + 1)) / 2);
+        }
+        return centerOfColumns;
+    }
+
+    private double getChiSquared(ArrayList<Double> theoretical, ArrayList<Integer> count) {
+        double chiSquared = 0;
+        for (int i = 0; i < count.size(); i++) {
+            chiSquared += Math.pow((double) count.get(i) - theoretical.get(i), 2) / theoretical.get(i);
+        }
+        return chiSquared;
+    }
+
+    private double getChiSquaredCritical(double alpha, int degreesOfFreedom) {
+        return 1;
     }
 
     private void saveListToFile(String filepath, ArrayList<Double> numbers) {
