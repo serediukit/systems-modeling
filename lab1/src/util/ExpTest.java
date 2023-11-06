@@ -16,6 +16,17 @@ public class ExpTest {
             ArrayList<Double> expNumbers = Generator.generateExpNumbers(COUNT, lambda);
             saveListToFile(folder + "/ExpNumbers_lam=" + lambda + ".txt", expNumbers);
 
+            double averageNum = expNumbers
+                    .stream()
+                    .mapToDouble(n -> n)
+                    .average()
+                    .orElse(Double.NaN);
+            double dispersion = expNumbers
+                    .stream()
+                    .mapToDouble(n -> n * n)
+                    .average()
+                    .orElse(Double.NaN) - averageNum * averageNum;
+
             double maxNum = expNumbers
                     .stream()
                     .mapToDouble(n -> n)
@@ -32,17 +43,6 @@ public class ExpTest {
 
             saveListToFile(folder + "/Columns_lam=" + lambda + ".txt", columns);
             saveIntListToFile(folder + "/CountInColumns_lam=" + lambda + ".txt", countInColumns);
-
-            double averageNum = expNumbers
-                    .stream()
-                    .mapToDouble(n -> n)
-                    .average()
-                    .orElse(Double.NaN);
-            double dispersion = expNumbers
-                    .stream()
-                    .mapToDouble(n -> n * n)
-                    .average()
-                    .orElse(Double.NaN) - averageNum * averageNum;
 
             ArrayList<Double> expTheoretical = getTheoreticalExp(columns, lambda);
             saveListToFile(folder + "/ExpTheoretical_lam=" + lambda + ".txt", expTheoretical);

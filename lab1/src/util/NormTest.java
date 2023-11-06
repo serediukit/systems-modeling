@@ -12,71 +12,89 @@ public class NormTest {
     final static private ArrayList<Double> deletedColumns = new ArrayList<>();
 
     public NormTest(String folder) {
-        for (double lambda = .5; lambda <= 5.0; lambda += 1.5) {
-            ArrayList<Double> expNumbers = Generator.generateExpNumbers(COUNT, lambda);
-            saveListToFile(folder + "/ExpNumbers_lam=" + lambda + ".txt", expNumbers);
+        for (int a = 0; a <= 6; a += 2) {
+            for (int omega = 1; omega <= 5; omega++) {
+                ArrayList<Double> normNumbers = Generator.generateNormNumbers(COUNT, a, omega);
+                saveListToFile(folder + "/NormNumbers_a=" + a + "_o=" + omega + ".txt", normNumbers);
 
-            double maxNum = expNumbers
-                    .stream()
-                    .mapToDouble(n -> n)
-                    .max()
-                    .orElse(Double.NaN);
-            ArrayList<Double> columns = getColumns(maxNum);
-            ArrayList<Integer> countInColumns = getCountInColumns(expNumbers, columns);
+                double averageNum = normNumbers
+                        .stream()
+                        .mapToDouble(n -> n)
+                        .average()
+                        .orElse(Double.NaN);
+                double dispersion = normNumbers
+                        .stream()
+                        .mapToDouble(n -> n * n)
+                        .average()
+                        .orElse(Double.NaN) - averageNum * averageNum;
 
-            for (int i = COLUMNS - 1; i >= 0; i--) {
-                if (deletedColumns.contains(columns.get(i))) {
-                    columns.remove(i);
+                double minNum = normNumbers
+                        .stream()
+                        .mapToDouble(n -> n)
+                        .min()
+                        .orElse(Double.NaN);
+                double maxNum = normNumbers
+                        .stream()
+                        .mapToDouble(n -> n)
+                        .max()
+                        .orElse(Double.NaN);
+                ArrayList<Double> columns = getColumns(minNum, maxNum);
+                ArrayList<Integer> countInColumns = getCountInColumns(expNumbers, columns);
+
+                for (int i = COLUMNS - 1; i >= 0; i--) {
+                    if (deletedColumns.contains(columns.get(i))) {
+                        columns.remove(i);
+                    }
                 }
-            }
 
-            saveListToFile(folder + "/Columns_lam=" + lambda + ".txt", columns);
-            saveIntListToFile(folder + "/CountInColumns_lam=" + lambda + ".txt", countInColumns);
+                saveListToFile(folder + "/Columns_lam=" + lambda + ".txt", columns);
+                saveIntListToFile(folder + "/CountInColumns_lam=" + lambda + ".txt", countInColumns);
 
-            double averageNum = expNumbers
-                    .stream()
-                    .mapToDouble(n -> n)
-                    .average()
-                    .orElse(Double.NaN);
-            double dispersion = expNumbers
-                    .stream()
-                    .mapToDouble(n -> n * n)
-                    .average()
-                    .orElse(Double.NaN) - averageNum * averageNum;
+                double averageNum = expNumbers
+                        .stream()
+                        .mapToDouble(n -> n)
+                        .average()
+                        .orElse(Double.NaN);
+                double dispersion = expNumbers
+                        .stream()
+                        .mapToDouble(n -> n * n)
+                        .average()
+                        .orElse(Double.NaN) - averageNum * averageNum;
 
-            ArrayList<Double> expTheoretical = getTheoreticalExp(columns, lambda);
-            saveListToFile(folder + "/ExpTheoretical_lam=" + lambda + ".txt", expTheoretical);
+                ArrayList<Double> expTheoretical = getTheoreticalExp(columns, lambda);
+                saveListToFile(folder + "/ExpTheoretical_lam=" + lambda + ".txt", expTheoretical);
 //            ArrayList<Double> centerOfColumns = getCenterColumns(columns);
 //            ArrayList<Double> theoreticalForCentredColumns = getTheoreticalExp(centerOfColumns, lambda);
 //            saveListToFile(folder + "/ExpTheoreticalCentredColumns_lam=" + lambda + ".txt", theoreticalForCentredColumns);
 
-            double chiSquared = getChiSquared(expTheoretical, countInColumns, lambda);
-            double chiSquaredCritical = ChiCritical.getChiSquaredCritical(1 - ALPHA, columns.size() - 1);
+                double chiSquared = getChiSquared(expTheoretical, countInColumns, lambda);
+                double chiSquaredCritical = ChiCritical.getChiSquaredCritical(1 - ALPHA, columns.size() - 1);
 
-            System.out.println();
-            System.out.println();
+                System.out.println();
+                System.out.println();
 
-            System.out.println("Лямбда: " + lambda);
-            System.out.println("Математичне сподівання: " + averageNum);
-            System.out.println("Дисперсія: " + dispersion);
-            System.out.println("Хі-квадрат: " + chiSquared);
-            System.out.println("Хі-квадрат критичне: " + chiSquaredCritical);
+                System.out.println("Лямбда: " + lambda);
+                System.out.println("Математичне сподівання: " + averageNum);
+                System.out.println("Дисперсія: " + dispersion);
+                System.out.println("Хі-квадрат: " + chiSquared);
+                System.out.println("Хі-квадрат критичне: " + chiSquaredCritical);
 
-            if (chiSquared <= chiSquaredCritical)
-                System.out.println("Розподіл відповідає - нульову гіпотезу не відхиляємо");
-            else
-                System.out.println("Розподіл не відповідає - нульову гіпотезу відхиляємо");
+                if (chiSquared <= chiSquaredCritical)
+                    System.out.println("Розподіл відповідає - нульову гіпотезу не відхиляємо");
+                else
+                    System.out.println("Розподіл не відповідає - нульову гіпотезу відхиляємо");
 
-            System.out.println();
-            System.out.println();
+                System.out.println();
+                System.out.println();
+            }
         }
     }
 
-    private ArrayList<Double> getColumns(double maxNum) {
+    private ArrayList<Double> getColumns(double minNum, double maxNum) {
         ArrayList<Double> columns = new ArrayList<>();
-        double step = maxNum / COLUMNS;
+        double step = (maxNum - minNum) / COLUMNS;
         for (int i = 0; i < COLUMNS; i++) {
-            columns.add(i * step);
+            columns.add(minNum + i * step);
         }
         return columns;
     }
