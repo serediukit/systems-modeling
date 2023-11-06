@@ -1,7 +1,5 @@
 package util;
 
-import org.apache.commons.math3.analysis.function.Histogram;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -142,7 +140,7 @@ public class ExpTest {
         System.out.println(statistic);
         double chiSquared = 0;
         for (int i = 0; i < statistic.size(); i++) {
-            chiSquared += Math.pow((double) statistic.get(i) - theoretical.get(i), 2) / theoretical.get(i);
+            chiSquared += Math.pow((double) statistic.get(i) / COUNT - theoretical.get(i), 2) / theoretical.get(i);
         }
         return chiSquared;
     }
