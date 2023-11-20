@@ -37,7 +37,7 @@ public class ExpTest {
             ArrayList<Integer> countInColumns = getCountInColumns(expNumbers, columns);
 
             for (int i = COLUMNS - 1; i >= 0; i--) {
-                if (deletedColumns.contains(columns.get(i))) {
+                if (deletedColumns.contains(columns.get(i)) && countInColumns.size() < columns.size()) {
                     columns.remove(i);
                 }
             }
@@ -128,10 +128,23 @@ public class ExpTest {
 
     private double getChiSquared(ArrayList<Double> theoretical, ArrayList<Integer> statistic, double lambda) {
         double chiSquared = 0;
-        for (int i = 0; i < statistic.size(); i++) {
-            double theory = (theoretical.get(i) - theoretical.get(i + 1)) / lambda;
-            chiSquared += Math.pow((double) statistic.get(i) / COUNT - theory, 2) / theory;
+        if (theoretical.size() != statistic.size()) {
+            for (int i = 0; i < statistic.size(); i++) {
+                double theory = (theoretical.get(i) - theoretical.get(i + 1)) / lambda;
+                chiSquared += Math.pow((double) statistic.get(i) / COUNT - theory, 2) / theory;
+            }
+        } else {
+            for (int i = 0; i < statistic.size(); i++) {
+                if (i == statistic.size() - 1) {
+                    double theory = (theoretical.get(i) - 0) / lambda;
+                    chiSquared += Math.pow((double) statistic.get(i) / COUNT - theory, 2) / theory;
+                } else {
+                    double theory = (theoretical.get(i) - theoretical.get(i + 1)) / lambda;
+                    chiSquared += Math.pow((double) statistic.get(i) / COUNT - theory, 2) / theory;
+                }
+            }
         }
+
         return chiSquared;
     }
 
