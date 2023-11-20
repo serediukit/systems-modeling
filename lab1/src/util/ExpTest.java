@@ -46,9 +46,6 @@ public class ExpTest {
 
             ArrayList<Double> expTheoretical = getTheoreticalExp(columns, lambda);
             saveListToFile(folder + "/ExpTheoretical_lam=" + lambda + ".txt", expTheoretical);
-//            ArrayList<Double> centerOfColumns = getCenterColumns(columns);
-//            ArrayList<Double> theoreticalForCentredColumns = getTheoreticalExp(centerOfColumns, lambda);
-//            saveListToFile(folder + "/ExpTheoreticalCentredColumns_lam=" + lambda + ".txt", theoreticalForCentredColumns);
 
             double chiSquared = getChiSquared(expTheoretical, countInColumns, lambda);
             double chiSquaredCritical = ChiCritical.getChiSquaredCritical(1 - ALPHA, columns.size() - 1);
@@ -128,21 +125,12 @@ public class ExpTest {
         return theoreticalExp;
     }
 
-//    private ArrayList<Double> getCenterColumns(ArrayList<Double> columns) {
-//        ArrayList<Double> centerOfColumns =  new ArrayList<>();
-//        for (int i = 0; i < columns.size() - 1;  i++) {
-//            centerOfColumns.add((columns.get(i) + columns.get(i + 1)) / 2);
-//        }
-//        return centerOfColumns;
-//    }
-
     private double getChiSquared(ArrayList<Double> theoretical, ArrayList<Integer> statistic, double lambda) {
         double chiSquared = 0;
         for (int i = 0; i < statistic.size(); i++) {
             double theory = (theoretical.get(i) - theoretical.get(i + 1)) / lambda;
             chiSquared += Math.pow((double) statistic.get(i) / COUNT - theory, 2) / theory;
         }
-        System.out.println();
         return chiSquared;
     }
 

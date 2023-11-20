@@ -13,9 +13,9 @@ public class NormTest {
 
     public NormTest(String folder) {
         for (int a = 0; a <= 6; a += 2) {
-            for (int omega = 1; omega <= 5; omega++) {
-                ArrayList<Double> normNumbers = Generator.generateNormNumbers(COUNT, a, omega);
-                saveListToFile(folder + "/NormNumbers_a=" + a + "_o=" + omega + ".txt", normNumbers);
+            for (int sigma = 1; sigma <= 5; sigma+=2) {
+                ArrayList<Double> normNumbers = Generator.generateNormNumbers(COUNT, a, sigma);
+                saveListToFile(folder + "/NormNumbers_a=" + a + "_sigma=" + sigma + ".txt", normNumbers);
 
                 double averageNum = normNumbers
                         .stream()
@@ -39,41 +39,27 @@ public class NormTest {
                         .max()
                         .orElse(Double.NaN);
                 ArrayList<Double> columns = getColumns(minNum, maxNum);
-                ArrayList<Integer> countInColumns = getCountInColumns(expNumbers, columns);
+                ArrayList<Integer> countInColumns = getCountInColumns(normNumbers, columns);
 
                 for (int i = COLUMNS - 1; i >= 0; i--) {
                     if (deletedColumns.contains(columns.get(i))) {
                         columns.remove(i);
                     }
                 }
+                saveListToFile(folder + "/Columns_a=" + a + "_sigma=" + sigma + ".txt", columns);
+                saveIntListToFile(folder + "/CountInColumns_a=" + a + "_sigma=" + sigma + ".txt", countInColumns);
 
-                saveListToFile(folder + "/Columns_lam=" + lambda + ".txt", columns);
-                saveIntListToFile(folder + "/CountInColumns_lam=" + lambda + ".txt", countInColumns);
+                ArrayList<Double> normTheoretical = getTheoreticalNorm(columns, averageNum, Math.sqrt(dispersion));
+                saveListToFile(folder + "/NormTheoretical_a=" + a + "_sigma=" + sigma + ".txt", normTheoretical);
 
-                double averageNum = expNumbers
-                        .stream()
-                        .mapToDouble(n -> n)
-                        .average()
-                        .orElse(Double.NaN);
-                double dispersion = expNumbers
-                        .stream()
-                        .mapToDouble(n -> n * n)
-                        .average()
-                        .orElse(Double.NaN) - averageNum * averageNum;
-
-                ArrayList<Double> expTheoretical = getTheoreticalExp(columns, lambda);
-                saveListToFile(folder + "/ExpTheoretical_lam=" + lambda + ".txt", expTheoretical);
-//            ArrayList<Double> centerOfColumns = getCenterColumns(columns);
-//            ArrayList<Double> theoreticalForCentredColumns = getTheoreticalExp(centerOfColumns, lambda);
-//            saveListToFile(folder + "/ExpTheoreticalCentredColumns_lam=" + lambda + ".txt", theoreticalForCentredColumns);
-
-                double chiSquared = getChiSquared(expTheoretical, countInColumns, lambda);
+                double chiSquared = getChiSquared(normTheoretical, countInColumns);
                 double chiSquaredCritical = ChiCritical.getChiSquaredCritical(1 - ALPHA, columns.size() - 1);
 
                 System.out.println();
                 System.out.println();
 
-                System.out.println("Лямбда: " + lambda);
+                System.out.println("A: " + a);
+                System.out.println("Омега: " + sigma);
                 System.out.println("Математичне сподівання: " + averageNum);
                 System.out.println("Дисперсія: " + dispersion);
                 System.out.println("Хі-квадрат: " + chiSquared);
@@ -101,9 +87,8 @@ public class NormTest {
 
     private ArrayList<Integer> getCountInColumns(ArrayList<Double> numbers, ArrayList<Double> columns) {
         ArrayList<Integer> count = new ArrayList<>();
-        int c;
+        int c = 0;
         for (int i = 0; i < COLUMNS - 1; i++) {
-            c = 0;
             while (c < 5 && i < COLUMNS - 1) {
                 for (Double num : numbers) {
                     if (num >= columns.get(i) && num < columns.get(i + 1)) {
@@ -122,8 +107,8 @@ public class NormTest {
             } else {
                 count.set(count.size() - 1, count.get(count.size() - 1) + c);
             }
+            c = 0;
         }
-        c = 0;
         for (Double num : numbers) {
             if (num >= columns.get(COLUMNS - 1)) {
                 c++;
@@ -138,29 +123,19 @@ public class NormTest {
         return count;
     }
 
-    private ArrayList<Double> getTheoreticalExp(ArrayList<Double> columns, double lambda) {
-        ArrayList<Double> theoreticalExp = new ArrayList<>();
+    private ArrayList<Double> getTheoreticalNorm(ArrayList<Double> columns, double a, double sigma) {
+        ArrayList<Double> theoreticalNorm = new ArrayList<>();
         for (Double column : columns) {
-            theoreticalExp.add(lambda * Math.exp(-lambda * column));
+            theoreticalNorm.add(Math.exp(-((column - a) * (column - a)) / (2 * sigma * sigma)) / (sigma * Math.sqrt(2 * Math.PI)));
         }
-        return theoreticalExp;
+        return theoreticalNorm;
     }
 
-//    private ArrayList<Double> getCenterColumns(ArrayList<Double> columns) {
-//        ArrayList<Double> centerOfColumns =  new ArrayList<>();
-//        for (int i = 0; i < columns.size() - 1;  i++) {
-//            centerOfColumns.add((columns.get(i) + columns.get(i + 1)) / 2);
-//        }
-//        return centerOfColumns;
-//    }
-
-    private double getChiSquared(ArrayList<Double> theoretical, ArrayList<Integer> statistic, double lambda) {
+    private double getChiSquared(ArrayList<Double> theoretical, ArrayList<Integer> statistic) {
         double chiSquared = 0;
         for (int i = 0; i < statistic.size(); i++) {
-            double theory = (theoretical.get(i) - theoretical.get(i + 1)) / lambda;
-            chiSquared += Math.pow((double) statistic.get(i) / COUNT - theory, 2) / theory;
+            chiSquared += Math.pow(theoretical.get(i) - (double) statistic.get(i) / COUNT, 2) / theoretical.get(i);
         }
-        System.out.println();
         return chiSquared;
     }
 

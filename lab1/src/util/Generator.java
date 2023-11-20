@@ -19,16 +19,16 @@ public class Generator {
         return - (1 / lambda) * Math.log(rnd);
     }
 
-    public static ArrayList<Double> generateNormNumbers(int count, double a, double omega) {
+    public static ArrayList<Double> generateNormNumbers(int count, double a, double sigma) {
         ArrayList<Double> numbers = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            numbers.add(randNorm(a, omega));
+            numbers.add(randNorm(a, sigma));
         }
         return numbers;
     }
 
-    public static double randNorm(double a, double omega) {
-        return omega * generateMU() + a;
+    public static double randNorm(double a, double sigma) {
+        return sigma * generateMU() + a;
     }
 
     private static double generateMU() {
