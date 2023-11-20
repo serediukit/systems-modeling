@@ -12,6 +12,7 @@ public class ExpTest {
     final static private ArrayList<Double> deletedColumns = new ArrayList<>();
 
     public ExpTest(String folder) {
+        System.out.println("PERFORMING EXPONENT TESTING");
         for (double lambda = .5; lambda <= 5.0; lambda += 1.5) {
             ArrayList<Double> expNumbers = Generator.generateExpNumbers(COUNT, lambda);
             saveListToFile(folder + "/ExpNumbers_lam=" + lambda + ".txt", expNumbers);

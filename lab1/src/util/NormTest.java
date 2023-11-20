@@ -12,6 +12,7 @@ public class NormTest {
     final static private ArrayList<Double> deletedColumns = new ArrayList<>();
 
     public NormTest(String folder) {
+        System.out.println("PERFORMING NORMAL TESTING");
         for (int a = 0; a <= 6; a += 2) {
             for (int sigma = 1; sigma <= 5; sigma+=2) {
                 ArrayList<Double> normNumbers = Generator.generateNormNumbers(COUNT, a, sigma);

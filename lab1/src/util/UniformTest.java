@@ -10,6 +10,7 @@ public class UniformTest {
     final static private ArrayList<Double> deletedColumns = new ArrayList<>();
 
     public UniformTest(String folder) {
+        System.out.println("PERFORMING UNIFORM TESTING");
         int[] pow = new int[] {
                 13,
                 17,
