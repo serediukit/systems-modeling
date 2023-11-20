@@ -1,5 +1,7 @@
 package util;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class Generator {
@@ -37,5 +39,15 @@ public class Generator {
             res += Math.random() - 6;
         }
         return res;
+    }
+
+    public static ArrayList<Double> generateUniformNumbers(int count, double a, double c) {
+        ArrayList<Double> numbers = new ArrayList<>();
+        BigDecimal z = new BigDecimal(1);
+        for (int i = 0; i < count; i++) {
+            z = z.multiply(new BigDecimal(a)).remainder(new BigDecimal(c));
+            numbers.add(z.divide(new BigDecimal(c), 10, RoundingMode.CEILING).doubleValue());
+        }
+        return numbers;
     }
 }
