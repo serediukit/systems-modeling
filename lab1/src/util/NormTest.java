@@ -54,7 +54,7 @@ public class NormTest {
                 saveListToFile(folder + "/NormTheoretical_a=" + a + "_sigma=" + sigma + ".txt", normTheoretical);
 
                 double chiSquared = getChiSquared(normTheoretical, countInColumns);
-                double chiSquaredCritical = ChiCritical.getChiSquaredCritical(1 - ALPHA, columns.size() - 1);
+                double chiSquaredCritical = ChiCritical.getChiSquaredCritical(1 - ALPHA, columns.size() - 2);
 
                 System.out.println();
                 System.out.println();

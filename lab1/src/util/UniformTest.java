@@ -50,7 +50,7 @@ public class UniformTest {
                 saveListToFile(folder + "/UniformTheoretical_a=2^" + pow[ai] + "_c=5^" + pow[cj] + ".txt", uniformTheoretical);
 
                 double chiSquared = getChiSquared(uniformTheoretical, countInColumns);
-                double chiSquaredCritical = ChiCritical.getChiSquaredCritical(1 - ALPHA, columns.size() - 1);
+                double chiSquaredCritical = ChiCritical.getChiSquaredCritical(1 - ALPHA, columns.size() - 2);
 
                 System.out.println();
                 System.out.println();
