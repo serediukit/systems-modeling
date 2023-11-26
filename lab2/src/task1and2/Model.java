@@ -1,4 +1,4 @@
-package task1;
+package task1and2;
 
 public class Model {
     private double tnext;
@@ -14,6 +14,7 @@ public class Model {
     private int maxqueue;
     private int queue;
     private int nextEvent;
+    private double sumQueueLength = .0;
 
     public Model(double delay0, double delay1) {
         delayCreate = delay0;
@@ -60,6 +61,7 @@ public class Model {
         System.out.println("numCreate = " + numCreate
                 + " numProcess = " + numProcess
                 + " failure = " + failure
+                + " averageQueueLength = " + sumQueueLength / numProcess
         );
     }
     public void printInfo() {
@@ -87,7 +89,9 @@ public class Model {
         if (queue > 0) {
             queue--;
             state = 1;
-            t1 = tcurr + getDelayOfProcess();
+            double delayOfProcess = getDelayOfProcess();
+            t1 = tcurr + delayOfProcess;
+            sumQueueLength += delayOfProcess;
         }
         numProcess++;
     }
