@@ -1,8 +1,8 @@
 package task3and4;
 
 public class Create extends Element {
-    public Create(double delay) {
-        super(delay);
+    public Create(String name, double delay) {
+        super(name, delay);
         super.setTnext(0.0); // імітація розпочнеться з події Create
     }
 

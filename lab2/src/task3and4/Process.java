@@ -1,10 +1,12 @@
 package task3and4;
 
 public class Process extends Element {
-    private int queue, maxqueue, failure;
+    private int queue;
+    private int maxqueue;
+    private int failure;
     private double meanQueue;
-    public Process(double delay) {
-        super(delay);
+    public Process(String name, double delay) {
+        super(name, delay);
         queue = 0;
         maxqueue = Integer.MAX_VALUE;
         meanQueue = 0.0;
@@ -15,8 +17,8 @@ public class Process extends Element {
             super.setState(1);
             super.setTnext(super.getTcurr() + super.getDelay());
         } else {
-            if (getQueue() < getMaxqueue()) {
-                setQueue(getQueue() + 1);
+            if (queue < maxqueue) {
+                queue++;
             } else {
                 failure++;
             }
@@ -27,25 +29,18 @@ public class Process extends Element {
         super.outAct();
         super.setTnext(Double.MAX_VALUE);
         super.setState(0);
-        if (getQueue() > 0) {
-            setQueue(getQueue() - 1);
+        if (queue > 0) {
+            queue--;
             super.setState(1);
             super.setTnext(super.getTcurr() + super.getDelay());
+        }
+        if (super.getNextElement() != null) {
+            super.getNextElement().inAct();
         }
     }
 
     public int getFailure() {
         return failure;
-    }
-    public int getQueue() {
-        return queue;
-    }
-
-    public void setQueue(int queue) {
-        this.queue = queue;
-    }
-    public int getMaxqueue() {
-        return maxqueue;
     }
     public void setMaxqueue(int maxqueue) {
         this.maxqueue = maxqueue;

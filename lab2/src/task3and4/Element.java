@@ -34,7 +34,6 @@ public class Element {
         nextElement = null;
         id = nextId;
         nextId++;
-        name = "element" + id;
     }
     public Element(String nameOfElement, double delay) {
         name = nameOfElement;
@@ -46,38 +45,15 @@ public class Element {
         nextElement = null;
         id = nextId;
         nextId++;
-        name = "element" + id;
     }
 
     public double getDelay() {
-        double delay = getDelayMean();
-        if ("exp".equalsIgnoreCase(getDistribution())) {
-            delay = FunRand.Exp(getDelayMean());
-        } else {
-            if ("norm".equalsIgnoreCase(getDistribution())) {
-                delay = FunRand.Norm(getDelayMean(),
-                        getDelayDev());
-            } else {
-                if ("unif".equalsIgnoreCase(getDistribution())) {
-                    delay = FunRand.Unif(getDelayMean(),
-                            getDelayDev());
-                } else {
-                    if ("".equalsIgnoreCase(getDistribution()))
-                        delay = getDelayMean();
-                }
-            }
-        }
-        return delay;
-    }
-
-    public double getDelayDev() {
-        return delayDev;
-    }
-    public void setDelayDev(double delayDev) {
-        this.delayDev = delayDev;
-    }
-    public String getDistribution() {
-        return distribution;
+        return switch (distribution.toLowerCase()) {
+            case "exp" -> FunRand.Exp(delayMean);
+            case "norm" -> FunRand.Norm(delayMean, delayDev);
+            case "unif" -> FunRand.Unif(delayMean, delayDev);
+            default -> delayMean;
+        };
     }
     public void setDistribution(String distribution) {
         this.distribution = distribution;
@@ -117,34 +93,20 @@ public class Element {
     public void setTnext(double tnext) {
         this.tnext = tnext;
     }
-    public double getDelayMean() {
-        return delayMean;
-    }
-    public void setDelayMean(double delayMean) {
-        this.delayMean = delayMean;
-    }
     public int getId() {
         return id;
     }
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void printResult() {
         System.out.println(getName() + " quantity = " + quantity);
     }
-
     public void printInfo() {
-        System.out.println(getName() + " state= " + state
+        System.out.println(getName() + " state = " + state
                 + " quantity = " + quantity
-                + " tnext= " + tnext
+                + " tnext = " + tnext
         );
     }
     public String getName() {
         return name;
-    }
-    public void setName(String name) {
-        this.name = name;
     }
     public void doStatistics(double delta) {
 
