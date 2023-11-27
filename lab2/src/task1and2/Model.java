@@ -14,7 +14,7 @@ public class Model {
     private int maxqueue;
     private int queue;
     private int nextEvent;
-    private double sumQueueLength = .0;
+    private double sumTime = .0;
 
     public Model(double delay0, double delay1) {
         delayCreate = delay0;
@@ -61,7 +61,7 @@ public class Model {
         System.out.println("numCreate = " + numCreate
                 + " numProcess = " + numProcess
                 + " failure = " + failure
-                + " averageQueueLength = " + sumQueueLength / numProcess
+                + " averageTimeProcess = " + sumTime / numProcess
         );
     }
     public void printInfo() {
@@ -91,7 +91,7 @@ public class Model {
             state = 1;
             double delayOfProcess = getDelayOfProcess();
             t1 = tcurr + delayOfProcess;
-            sumQueueLength += delayOfProcess;
+            sumTime += delayOfProcess;
         }
         numProcess++;
     }
