@@ -1,48 +1,51 @@
 package task3and4;
 
 public class Model {
+    private double[] t = new double[4];
+    private double[] sumQueueLength = new double[] { 0, 0, 0 };
+    private int[] numProcess = new int[3];
+    private int[] queue = new int[3];
     private double tnext;
     private double tcurr;
-    private double t0;
-    private double t1;
     private double delayCreate;
     private double delayProcess;
     private int numCreate;
-    private int numProcess;
     private int failure;
     private int state;
-    private int maxqueue;
-    private int queue;
+    private int maxQueue;
     private int nextEvent;
-    private double sumQueueLength = .0;
 
-    public Model(double delay0, double delay1) {
-        delayCreate = delay0;
-        delayProcess = delay1;
+    public Model(double delayCreate, double delayProcess) {
+        this.delayCreate = delayCreate;
+        this.delayProcess = delayProcess;
         tnext = 0.0;
         tcurr = tnext;
-        t0 = tcurr;
-        t1 = Double.MAX_VALUE;
-        maxqueue = 0;
+        t[0] = tcurr;
+        t[1] = Double.MAX_VALUE;
+        t[2] = Double.MAX_VALUE;
+        t[3] = Double.MAX_VALUE;
+        maxQueue = 0;
     }
-    public Model(double delay0, double delay1, int maxQ) {
-        delayCreate = delay0;
-        delayProcess = delay1;
+    public Model(double delayCreate, double delayProcess, int maxQueue) {
+        this.delayCreate = delayCreate;
+        this.delayProcess = delayProcess;
         tnext = 0.0;
         tcurr = tnext;
-        t0 = tcurr;
-        t1 = Double.MAX_VALUE;
-        maxqueue = maxQ;
+        t[0] = tcurr;
+        t[1] = Double.MAX_VALUE;
+        t[2] = Double.MAX_VALUE;
+        t[3] = Double.MAX_VALUE;
+        this.maxQueue = maxQueue;
     }
 
     public void simulate(double timeModeling) {
         while (tcurr < timeModeling) {
 
-            tnext = t0;
+            tnext = t[0];
             nextEvent = 0;
 
-            if (t1 < tnext) {
-                tnext = t1;
+            if (t[1] <= tnext && t[1] <= Math.min(t[2], t[3])) {
+                tnext = t[1];
                 nextEvent = 1;
             }
             tcurr = tnext;
