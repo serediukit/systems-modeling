@@ -7,10 +7,10 @@ public class Main {
     public static void main(String[] args) {
 //        test();
 
-        Create c = new Create("CREATOR", 5.0);
-        Process p1 = new Process("PROCESSOR1", 5.0);
-        Process p2 = new Process("PROCESSOR2", 5.0);
-        Process p3 = new Process("PROCESSOR3", 5.0);
+        Create c = new Create("CREATOR", 1.0);
+        Process p1 = new Process("PROCESSOR1", 5.0, 5);
+        Process p2 = new Process("PROCESSOR2", 10.0, 10);
+        Process p3 = new Process("PROCESSOR3", 5.0, 5);
         p1.setMaxqueue(5);
         p2.setMaxqueue(5);
         p3.setMaxqueue(5);
@@ -57,9 +57,9 @@ public class Main {
 
     private static Model getModel(int[] data) {
         Create c = new Create("CREATOR", data[0]);
-        Process p1 = new Process("PROCESSOR1", data[1]);
-        Process p2 = new Process("PROCESSOR2", data[2]);
-        Process p3 = new Process("PROCESSOR3", data[3]);
+        Process p1 = new Process("PROCESSOR1", data[1], 1);
+        Process p2 = new Process("PROCESSOR2", data[2], 1);
+        Process p3 = new Process("PROCESSOR3", data[3], 1);
         p1.setMaxqueue(data[4]);
         p2.setMaxqueue(data[5]);
         p3.setMaxqueue(data[6]);
