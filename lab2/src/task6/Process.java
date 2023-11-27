@@ -1,6 +1,7 @@
 package task6;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Process extends Element {
     private int queue;
@@ -10,6 +11,8 @@ public class Process extends Element {
     private final double countOfProcesses;
     private ArrayList<Integer> stateOfProcesses = new ArrayList<>();
     private ArrayList<Double> tnextOfProcesses = new ArrayList<>();
+    private ArrayList<Element> nextElements = new ArrayList<>();
+    private ArrayList<Double> nextElementsChances = new ArrayList<>();
     public Process(String name, double delay, int countOfProcesses) {
         super(name, delay);
         this.countOfProcesses = countOfProcesses;
@@ -46,7 +49,6 @@ public class Process extends Element {
     public void outAct() {
         super.outAct();
         for (int i = 0; i < countOfProcesses; i++) {
-            System.out.println("da");
             if (tnextOfProcesses.get(i) == super.getTcurr()) {
                 stateOfProcesses.set(i, 0);
                 tnextOfProcesses.set(i, Double.MAX_VALUE);
@@ -60,6 +62,14 @@ public class Process extends Element {
                 break;
             }
         }
+        if (nextElements.size() > 1) {
+            Element element = getRandomElement();
+            System.out.println("Choosing " + element.getName());
+            super.setNextElement(element);
+        }
+
+        if (super.getNextElement() != null)
+            super.getNextElement().inAct();
     }
 
     public int getFailure() {
@@ -87,5 +97,28 @@ public class Process extends Element {
                 .mapToDouble(x -> x)
                 .min()
                 .orElse(Double.MAX_VALUE));
+    }
+
+    public void setNextElements(List<Element> nextElements) {
+        this.nextElements.addAll(nextElements);
+        if (super.getNextElement() == null)
+            super.setNextElement(nextElements.get(0));
+    }
+
+    public void setNextElementsChances(List<Double> nextElementsChances) {
+        this.nextElementsChances.addAll(nextElementsChances);
+    }
+
+    public Element getRandomElement() {
+        if (nextElements.size() != nextElementsChances.size())
+            return nextElements.get(0);
+        double totalChance = 0;
+        double chance = Math.random();
+        for (int i = 0; i < nextElementsChances.size(); i++) {
+            totalChance += nextElementsChances.get(i);
+            if (chance <= totalChance)
+                return nextElements.get(i);
+        }
+        return nextElements.get(0);
     }
 }

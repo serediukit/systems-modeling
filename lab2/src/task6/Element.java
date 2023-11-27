@@ -85,8 +85,6 @@ public class Element {
     }
     public void outAct() {
         quantity++;
-        if (nextElement != null)
-            nextElement.inAct();
     }
 
     public double getTnext() {

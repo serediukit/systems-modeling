@@ -46,7 +46,6 @@ public class Process extends Element {
     public void outAct() {
         super.outAct();
         for (int i = 0; i < countOfProcesses; i++) {
-            System.out.println("da");
             if (tnextOfProcesses.get(i) == super.getTcurr()) {
                 stateOfProcesses.set(i, 0);
                 tnextOfProcesses.set(i, Double.MAX_VALUE);
