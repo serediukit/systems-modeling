@@ -51,14 +51,14 @@ public class Model {
         System.out.println("\n-------------RESULTS-------------");
         for (Element e : list) {
             e.printResult();
-            if (e instanceof Process) {
-                Process p = (Process) e;
+            if (e instanceof Process p) {
                 System.out.println("mean length of queue = "
                         + p.getMeanQueue() / tcurr
                         + "\nfailure probability = "
                         + p.getFailure() / (double) p.getQuantity()
                 );
             }
+            System.out.println();
         }
     }
 }

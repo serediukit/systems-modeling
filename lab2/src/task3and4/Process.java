@@ -34,9 +34,6 @@ public class Process extends Element {
             super.setState(1);
             super.setTnext(super.getTcurr() + super.getDelay());
         }
-        if (super.getNextElement() != null) {
-            super.getNextElement().inAct();
-        }
     }
 
     public int getFailure() {
@@ -52,7 +49,7 @@ public class Process extends Element {
     }
     @Override
     public void doStatistics(double delta) {
-        meanQueue = getMeanQueue() + queue * delta;
+        meanQueue += queue * delta;
     }
     public double getMeanQueue() {
         return meanQueue;

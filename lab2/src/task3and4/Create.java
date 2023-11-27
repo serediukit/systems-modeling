@@ -10,6 +10,5 @@ public class Create extends Element {
     public void outAct() {
         super.outAct();
         super.setTnext(super.getTcurr() + super.getDelay());
-        super.getNextElement().inAct();
     }
 }

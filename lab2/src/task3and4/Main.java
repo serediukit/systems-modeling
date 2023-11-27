@@ -6,10 +6,10 @@ import java.util.Collections;
 
 public class Main {
     public static void main(String[] args) {
-        Create c = new Create("CREATOR", 2.0);
-        Process p1 = new Process("PROCESSOR1", 1.0);
-        Process p2 = new Process("PROCESSOR2", 1.0);
-        Process p3 = new Process("PROCESSOR3", 1.0);
+        Create c = new Create("CREATOR", 5.0);
+        Process p1 = new Process("PROCESSOR1", 5.0);
+        Process p2 = new Process("PROCESSOR2", 5.0);
+        Process p3 = new Process("PROCESSOR3", 5.0);
         p1.setMaxqueue(5);
         p2.setMaxqueue(5);
         p3.setMaxqueue(5);
