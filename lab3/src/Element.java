@@ -11,33 +11,11 @@ public class Element {
     private static int nextId = 0;
     private int id;
 
-    public Element() {
-        tnext = Double.MAX_VALUE;
-        delayMean = 1.0;
-        distribution = "exp";
-        tcurr = tnext;
-        state = 0;
-        nextElement = null;
-        id = nextId;
-        nextId++;
-        name = "element" + id;
-    }
-    public Element(double delay) {
-        name = "anonymus";
-        tnext = 0.0;
-        delayMean = delay;
-        distribution = "";
-        tcurr = tnext;
-        state = 0;
-        nextElement = null;
-        id = nextId;
-        nextId++;
-    }
-    public Element(String nameOfElement, double delay) {
+    public Element(String nameOfElement, String distribution, double delay) {
         name = nameOfElement;
         tnext = 0.0;
         delayMean = delay;
-        distribution = "exp";
+        this.distribution = distribution;
         tcurr = tnext;
         state = 0;
         nextElement = null;
@@ -53,9 +31,6 @@ public class Element {
             default -> delayMean;
         };
     }
-    public void setDistribution(String distribution) {
-        this.distribution = distribution;
-    }
 
     public int getQuantity() {
         return quantity;
@@ -65,12 +40,6 @@ public class Element {
     }
     public void setTcurr(double tcurr) {
         this.tcurr = tcurr;
-    }
-    public int getState() {
-        return state;
-    }
-    public void setState(int state) {
-        this.state = state;
     }
     public Element getNextElement() {
         return nextElement;
@@ -84,7 +53,6 @@ public class Element {
     public void outAct() {
         quantity++;
     }
-
     public double getTnext() {
         return tnext;
     }
@@ -108,9 +76,5 @@ public class Element {
     }
     public void doStatistics(double delta) {
 
-    }
-
-    public static void clear() {
-        nextId = 0;
     }
 }

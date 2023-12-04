@@ -11,8 +11,9 @@ public class Process extends Element {
     private ArrayList<Double> tnextOfProcesses = new ArrayList<>();
     private ArrayList<Element> nextElements = new ArrayList<>();
     private ArrayList<Double> nextElementsChances = new ArrayList<>();
-    public Process(String name, double delay, int countOfProcesses) {
-        super(name, delay);
+
+    public Process(String name, String distribution, double delay, int countOfProcesses, int maxqueue) {
+        super(name, distribution, delay);
         this.countOfProcesses = countOfProcesses;
         while (countOfProcesses-- > 0) {
             stateOfProcesses.add(0);
@@ -20,7 +21,7 @@ public class Process extends Element {
         }
         setTnext();
         queue = 0;
-        maxqueue = Integer.MAX_VALUE;
+        this.maxqueue = maxqueue;
         meanQueue = 0.0;
     }
     @Override

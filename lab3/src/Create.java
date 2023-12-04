@@ -1,6 +1,6 @@
 public class Create extends Element {
-    public Create(String name, double delay) {
-        super(name, delay);
+    public Create(String name, String distribution, double delay) {
+        super(name, distribution, delay);
         super.setTnext(0.0); // імітація розпочнеться з події Create
     }
 
