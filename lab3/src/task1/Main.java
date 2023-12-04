@@ -1,7 +1,9 @@
+package task1;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 
 public class Main {
     public static void main(String[] args) {
