@@ -32,11 +32,19 @@ public class PriorityProcess extends Process {
                 }
             }
         }
+        Process temp = (Process) super.getNextElements().get(0);
+        int minQueue = temp.getQueue();
+        for (int i = 1; i < super.getNextElements().size(); i++) {
+            temp = (Process) super.getNextElements().get(i);
+            if (temp.getQueue() < minQueue) {
+                minQueue = temp.getQueue();
+            }
+        }
         for (Integer priority : sortedList) {
             for (int i = 0; i < nextElementsPriority.size(); i++) {
                 if (Objects.equals(priority, nextElementsPriority.get(i))) {
                     Process np = (Process) super.getNextElements().get(i);
-                    if (np.getQueue() < np.getMaxqueue()) {
+                    if (np.getQueue() == minQueue) {
                         System.out.println("Choosing " + super.getNextElements().get(i).getName() + " with priority " + nextElementsPriority.get(i));
                         return super.getNextElements().get(i);
                     }

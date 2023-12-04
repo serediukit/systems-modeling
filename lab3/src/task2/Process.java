@@ -65,12 +65,13 @@ public class Process extends Element {
         }
         if (nextElements.size() > 1) {
             Element element = getNextElement();
-            //System.out.println("Choosing " + element.getName());
             super.setNextElement(element);
         }
 
         if (super.getNextElement() != null)
             super.getNextElement().inAct();
+
+        setTnext();
     }
 
     @Override
@@ -127,5 +128,17 @@ public class Process extends Element {
                 return true;
         }
         return false;
+    }
+
+    public void setStateOfProcesses(int state) {
+        stateOfProcesses.replaceAll(ignored -> state);
+    }
+
+    public void setTnextOfProcesses(double tnext) {
+        tnextOfProcesses.replaceAll(ignored -> tnext);
+    }
+
+    public void setQueue(int queue) {
+        this.queue = queue;
     }
 }

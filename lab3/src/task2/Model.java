@@ -16,6 +16,7 @@ public class Model {
 
     public void simulate(double time) {
         while (tcurr < time) {
+            checkQueue();
             tnext = Double.MAX_VALUE;
             for (Element e : list) {
                 if (e.getTnext() < tnext) {
@@ -41,6 +42,27 @@ public class Model {
             printInfo();
         }
         printResult();
+    }
+    private void checkQueue() {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i) instanceof ConditionProcess) {
+                for (int j = i + 1; j < list.size(); j++) {
+                    if (list.get(j) instanceof ConditionProcess) {
+                        Process p1 = (Process) list.get(i);
+                        Process p2 = (Process) list.get(j);
+                        if (p1.getQueue() - p2.getQueue() >= 2) {
+                            p1.setQueue(p1.getQueue() - 1);
+                            p2.setQueue(p2.getQueue() + 1);
+                        } else if (p2.getQueue() - p1.getQueue() >= 2) {
+                            p1.setQueue(p1.getQueue() + 1);
+                            p2.setQueue(p2.getQueue() - 1);
+                        }
+                        return;
+                    }
+                }
+                break;
+            }
+        }
     }
     public void printInfo() {
         for (Element e: list) {

@@ -6,6 +6,11 @@ public class Create extends Element {
         super.setTnext(0.0); // імітація розпочнеться з події Create
     }
 
+    public Create(String name, String distribution, double delay, double tnext) {
+        super(name, distribution, delay);
+        super.setTnext(tnext); // імітація розпочнеться з події Create
+    }
+
     @Override
     public void outAct() {
         super.outAct();

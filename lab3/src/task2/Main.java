@@ -7,21 +7,26 @@ import static java.util.Arrays.asList;
 
 public class Main {
     public static void main(String[] args) {
-        Create c = new Create("CREATOR", "exp", 2.0);
-        PriorityProcess p1 = new PriorityProcess("PROCESSOR1", "exp", 1.0, 1, 5);
-        ChanceProcess p2 = new ChanceProcess("PROCESSOR2", "exp", 1.0, 1, 5);
-        Process p3 = new Process("PROCESSOR3", "exp", 1.0, 1, 5);
-        c.setNextElement(p1);
-        p1.setNextElements(asList(p2, p3));
-        p1.setNextElementsPriority(List.of(1, 2));
-        p2.setNextElements(asList(p3, p1));
-        p2.setNextElementsChances(List.of(.7));
-        System.out.println("id_0 = " + c.getId()
-                + " id_1 = " + p1.getId()
-                + " id_2 = " + p2.getId()
-                + " id_3 = " + p3.getId()
-        );
-        ArrayList<Element> list = new ArrayList<>(asList(c, p1, p2, p3));
+        Create creator = new Create("CREATOR", "exp", .5);
+        PriorityProcess priorityProcess = new PriorityProcess("PRIORITY_PROCESS", "exp", .0, 1, 1000);
+        ConditionProcess windowProcess1 = new ConditionProcess("WINDOW_PROCESS1", "exp", .3, 1, 3);
+        ConditionProcess windowProcess2 = new ConditionProcess("WINDOW_PROCESS2", "exp", .3, 1, 3);
+        Process desposeProcess = new Process("DESPOSER", "exp", .0, 1, 1000);
+        creator.setTnext(.1);
+        windowProcess1.setStateOfProcesses(1);
+        windowProcess2.setStateOfProcesses(1);
+        windowProcess1.setTnextOfProcesses(FunRand.Norm(1, .3));
+        windowProcess2.setTnextOfProcesses(FunRand.Norm(1, .3));
+        windowProcess1.setQueue(2);
+        windowProcess2.setQueue(2);
+        creator.setNextElement(priorityProcess);
+        priorityProcess.setNextElements(List.of(windowProcess1, windowProcess2));
+        priorityProcess.setNextElementsPriority(List.of(1, 2));
+        windowProcess1.setNextElements(List.of(desposeProcess, windowProcess2));
+        windowProcess1.setNextElementsConditions(List.of(0, 2));
+        windowProcess2.setNextElements(List.of(desposeProcess, windowProcess1));
+        windowProcess2.setNextElementsConditions(List.of(0, 2));
+        ArrayList<Element> list = new ArrayList<>(asList(creator, priorityProcess, windowProcess1, windowProcess2, desposeProcess));
         Model model = new Model(list);
         model.simulate(1000.0);
     }
