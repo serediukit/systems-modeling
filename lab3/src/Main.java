@@ -5,11 +5,11 @@ import static java.util.Arrays.*;
 public class Main {
     public static void main(String[] args) {
         Create c = new Create("CREATOR", "exp", 1.0);
-        Process p1 = new Process("PROCESSOR1", "exp", 1.0, 5, 5);
-        Process p2 = new Process("PROCESSOR2", "exp", 10.0, 15, 5);
+        PriorityProcess p1 = new PriorityProcess("PROCESSOR1", "exp", 1.0, 5, 5);
+        ChanceProcess p2 = new ChanceProcess("PROCESSOR2", "exp", 10.0, 15, 5);
         Process p3 = new Process("PROCESSOR3", "exp", 5.0, 15, 5);
         c.setNextElement(p1);
-        p1.setNextElement(p2);
+        p1.setNextElements(asList(p2, p3));
         p2.setNextElements(asList(p3, p1));
         p2.setNextElementsChances(asList(.7, .3));
         System.out.println("id_0 = " + c.getId()

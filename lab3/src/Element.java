@@ -62,6 +62,9 @@ public class Element {
     public int getId() {
         return id;
     }
+    public int getState() {
+        return state;
+    }
     public void printResult() {
         System.out.println(getName() + " quantity = " + quantity);
     }
