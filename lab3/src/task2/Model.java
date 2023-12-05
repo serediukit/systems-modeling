@@ -3,6 +3,8 @@ package task2;
 import java.util.ArrayList;
 
 public class Model {
+    private int swapsCount = 0;
+    private double time;
     private ArrayList<Element> list;
     private double tnext;
     private double tcurr;
@@ -15,6 +17,7 @@ public class Model {
     }
 
     public void simulate(double time) {
+        this.time = time;
         while (tcurr < time) {
             checkQueue();
             tnext = Double.MAX_VALUE;
@@ -53,9 +56,11 @@ public class Model {
                         if (p1.getQueue() - p2.getQueue() >= 2) {
                             p1.setQueue(p1.getQueue() - 1);
                             p2.setQueue(p2.getQueue() + 1);
+                            swapsCount++;
                         } else if (p2.getQueue() - p1.getQueue() >= 2) {
                             p1.setQueue(p1.getQueue() + 1);
                             p2.setQueue(p2.getQueue() - 1);
+                            swapsCount++;
                         }
                         return;
                     }
@@ -72,15 +77,66 @@ public class Model {
     public void printResult() {
         System.out.println("\n-------------RESULTS-------------");
         for (Element e : list) {
-            e.printResult();
-            if (e instanceof Process p) {
-                System.out.println("mean length of queue = "
+            if (e instanceof Create || e instanceof ConditionProcess) {
+                e.printResult();
+            }
+            if (e instanceof ConditionProcess p) {
+                System.out.println(
+                        "Mean length of queue = "
                         + p.getMeanQueue() / tcurr
-                        + "\nfailure probability = "
+                );
+                System.out.println(
+                        "Failure probability = "
                         + p.getFailure() / (double) p.getQuantity()
+                );
+                System.out.println(
+                        "Average time for cashier = "
+                        + p.totalTime / tcurr
+                );
+                System.out.println(
+                        "Average time between exits = "
+                        + p.totalExitTime / p.getQuantity()
                 );
             }
             System.out.println();
         }
+
+        for (Element e : list) {
+            if (e.getName() == "DESPOSER") {
+                System.out.println(
+                        "Average count of clients = "
+                        + e.getQuantity() / time
+                );
+                break;
+            }
+        }
+        double totalTimeForClients = 0;
+        for (Element e : list) {
+            if (e instanceof Process p) {
+                totalTimeForClients += p.totalTime + p.getMeanQueue();
+            }
+        }
+        System.out.println(
+                "Average time in bank = "
+                + totalTimeForClients / time
+        );
+        double countOfFailures = 0;
+        double totalQuantity = 1;
+        for (Element e : list) {
+            if (e instanceof Process p) {
+                countOfFailures += p.getFailure();
+            }
+            if (e instanceof Create c) {
+                totalQuantity = c.getQuantity();
+            }
+        }
+        System.out.println(
+                "Total percent of failures = "
+                + countOfFailures / totalQuantity
+        );
+        System.out.println(
+                "Swaps count = "
+                + swapsCount
+        );
     }
 }

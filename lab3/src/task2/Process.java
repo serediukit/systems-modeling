@@ -12,6 +12,9 @@ public class Process extends Element {
     private final ArrayList<Integer> stateOfProcesses = new ArrayList<>();
     private final ArrayList<Double> tnextOfProcesses = new ArrayList<>();
     private final ArrayList<Element> nextElements = new ArrayList<>();
+    public double totalTime = 0;
+    public double totalExitTime = 0;
+    private double lastExitTime = 0;
 
 
     public Process(String name, String distribution, double delay, int countOfProcesses, int maxqueue) {
@@ -21,7 +24,7 @@ public class Process extends Element {
             stateOfProcesses.add(0);
             tnextOfProcesses.add(Double.MAX_VALUE);
         }
-        setTnext();
+        setTnextForAllProcesses();
         queue = 0;
         this.maxqueue = maxqueue;
         meanQueue = 0.0;
@@ -32,8 +35,10 @@ public class Process extends Element {
         for (int i = 0; i < countOfProcesses; i++) {
             if (stateOfProcesses.get(i) == 0) {
                 stateOfProcesses.set(i, 1);
-                tnextOfProcesses.set(i, super.getTcurr() + super.getDelay());
-                setTnext();
+                double delay = super.getDelay();
+                tnextOfProcesses.set(i, super.getTcurr() + delay);
+                totalTime += delay;
+                setTnextForAllProcesses();
                 isFind = true;
                 break;
             }
@@ -49,16 +54,18 @@ public class Process extends Element {
     @Override
     public void outAct() {
         super.outAct();
+        totalExitTime += super.getTcurr() - lastExitTime;
+        lastExitTime = super.getTcurr();
         for (int i = 0; i < countOfProcesses; i++) {
             if (tnextOfProcesses.get(i) == super.getTcurr()) {
                 stateOfProcesses.set(i, 0);
                 tnextOfProcesses.set(i, Double.MAX_VALUE);
-                setTnext();
+                setTnextForAllProcesses();
                 if (queue > 0) {
                     queue--;
                     stateOfProcesses.set(i, 1);
                     tnextOfProcesses.set(i, super.getTcurr() + super.getDelay());
-                    setTnext();
+                    setTnextForAllProcesses();
                 }
                 break;
             }
@@ -70,8 +77,6 @@ public class Process extends Element {
 
         if (super.getNextElement() != null)
             super.getNextElement().inAct();
-
-        setTnext();
     }
 
     @Override
@@ -98,7 +103,7 @@ public class Process extends Element {
         return meanQueue;
     }
 
-    private void setTnext() {
+    private void setTnextForAllProcesses() {
         super.setTnext(tnextOfProcesses
                 .stream()
                 .mapToDouble(x -> x)
@@ -136,6 +141,7 @@ public class Process extends Element {
 
     public void setTnextOfProcesses(double tnext) {
         tnextOfProcesses.replaceAll(ignored -> tnext);
+        setTnextForAllProcesses();
     }
 
     public void setQueue(int queue) {
