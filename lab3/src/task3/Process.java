@@ -1,17 +1,19 @@
 package task3;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Process extends Element {
-    private int queue;
-    private int maxqueue;
-    private int failure;
+    protected int queue;
+    protected ArrayList<Integer> typeQueues;
+    protected int maxqueue;
+    protected int failure;
     private double meanQueue;
-    private final int countOfProcesses;
-    private final ArrayList<Integer> stateOfProcesses = new ArrayList<>();
-    private final ArrayList<Double> tnextOfProcesses = new ArrayList<>();
-    private final ArrayList<Element> nextElements = new ArrayList<>();
+    protected final int countOfProcesses;
+    protected final ArrayList<Integer> stateOfProcesses = new ArrayList<>();
+    protected final ArrayList<Double> tnextOfProcesses = new ArrayList<>();
+    protected final ArrayList<Element> nextElements = new ArrayList<>();
 
 
     public Process(String name, String distribution, double delay, int countOfProcesses, int maxqueue) {
@@ -25,13 +27,14 @@ public class Process extends Element {
         queue = 0;
         this.maxqueue = maxqueue;
         meanQueue = 0.0;
+        typeQueues = new ArrayList<>(Collections.nCopies(3, 0));
     }
     @Override
-    public void inAct() {
+    public void inAct(int type) {
         boolean isFind = false;
         for (int i = 0; i < countOfProcesses; i++) {
             if (stateOfProcesses.get(i) == 0) {
-                stateOfProcesses.set(i, 1);
+                stateOfProcesses.set(i, type + 1);
                 tnextOfProcesses.set(i, super.getTcurr() + super.getDelay());
                 setTnext();
                 isFind = true;
@@ -39,8 +42,8 @@ public class Process extends Element {
             }
         }
         if (!isFind)  {
-            if (queue < maxqueue) {
-                queue++;
+            if (typeQueues.get(type) < maxqueue) {
+                typeQueues.set(type, typeQueues.get(type) + 1);
             } else {
                 failure++;
             }
@@ -49,28 +52,31 @@ public class Process extends Element {
     @Override
     public void outAct() {
         super.outAct();
+        int nextType = 0;
         for (int i = 0; i < countOfProcesses; i++) {
             if (tnextOfProcesses.get(i) == super.getTcurr()) {
+                nextType = stateOfProcesses.get(i) - 1;
                 stateOfProcesses.set(i, 0);
                 tnextOfProcesses.set(i, Double.MAX_VALUE);
                 setTnext();
-                if (queue > 0) {
-                    queue--;
-                    stateOfProcesses.set(i, 1);
-                    tnextOfProcesses.set(i, super.getTcurr() + super.getDelay());
-                    setTnext();
+                for (int j = 0; j < typeQueues.size(); j++) {
+                    if (typeQueues.get(j) > 0) {
+                        typeQueues.set(j, typeQueues.get(j) - 1);
+                        stateOfProcesses.set(i, j + 1);
+                        tnextOfProcesses.set(i, super.getTcurr() + getDelay());
+                        setTnext();
+                        break;
+                    }
                 }
                 break;
             }
         }
-        if (nextElements.size() > 1) {
-            Element element = getNextElement();
-            //System.out.println("Choosing " + element.getName());
-            super.setNextElement(element);
-        }
+
+        if (nextElements.size() > 1)
+            super.setNextElement(nextElements.get(nextType));
 
         if (super.getNextElement() != null)
-            super.getNextElement().inAct();
+            super.getNextElement().inAct(nextType);
     }
 
     @Override
@@ -97,7 +103,7 @@ public class Process extends Element {
         return meanQueue;
     }
 
-    private void setTnext() {
+    protected void setTnext() {
         super.setTnext(tnextOfProcesses
                 .stream()
                 .mapToDouble(x -> x)

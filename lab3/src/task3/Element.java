@@ -3,10 +3,10 @@ package task3;
 public class Element {
     private String name;
     private double tnext;
-    private double delayMean;
-    private double delayDev;
-    private String distribution;
-    private int quantity;
+    protected double delayMean;
+    protected double delayDev;
+    protected String distribution;
+    protected int quantity;
     private double tcurr;
     private int state;
     private Element nextElement;
@@ -30,6 +30,7 @@ public class Element {
             case "exp" -> FunRand.Exp(delayMean);
             case "norm" -> FunRand.Norm(delayMean, delayDev);
             case "unif" -> FunRand.Unif(delayMean, delayDev);
+            case "erl" -> FunRand.Erlang(delayMean, delayDev);
             default -> delayMean;
         };
     }
@@ -49,7 +50,7 @@ public class Element {
     public void setNextElement(Element nextElement) {
         this.nextElement = nextElement;
     }
-    public void inAct() {
+    public void inAct(int type) {
 
     }
     public void outAct() {
@@ -81,5 +82,8 @@ public class Element {
     }
     public void doStatistics(double delta) {
 
+    }
+    public void setDelayDev(double delayDev) {
+        this.delayDev = delayDev;
     }
 }
