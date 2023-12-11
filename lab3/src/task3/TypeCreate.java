@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class TypeCreate extends Create {
-    private ArrayList<Double> typeChances = new ArrayList<>();
-    private ArrayList<Double> typeQuantity = new ArrayList<>(Collections.nCopies(3, .0));
+    private final ArrayList<Double> typeChances = new ArrayList<>();
+    private final ArrayList<Integer> typeQuantity = new ArrayList<>(Collections.nCopies(3, 0));
     public int lastCreatedType = 0;
 
     public TypeCreate(String name, String distribution, double delay) {
@@ -20,8 +20,7 @@ public class TypeCreate extends Create {
         typeQuantity.set(lastCreatedType, typeQuantity.get(lastCreatedType) + 1);
         super.setTnext(super.getTcurr() + super.getDelay());
         if (super.getNextElement() != null) {
-            TypeProcess p = (TypeProcess) super.getNextElement();
-            p.inAct(lastCreatedType);
+            super.getNextElement().inAct(lastCreatedType);
         }
     }
 
@@ -39,5 +38,9 @@ public class TypeCreate extends Create {
             }
         }
         return 0;
+    }
+
+    public ArrayList<Integer> getTypeQuantity() {
+        return typeQuantity;
     }
 }

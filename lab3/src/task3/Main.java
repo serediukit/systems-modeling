@@ -22,24 +22,28 @@ public class Main {
         TypeProcess analyzeInLaboratoryProcess = new TypeProcess("Analyze in laboratory", "erl", 4.0, 2, Integer.MAX_VALUE);
         analyzeInLaboratoryProcess.setDelayDev(2);
         analyzeInLaboratoryProcess.setDelayForTypes(asList(4.0, 4.0, 4.0));
-        ChangingProcess returningToRegistration = new ChangingProcess("Returning to registration from laboratory", "unif", 2, 1000, Integer.MAX_VALUE);
-        returningToRegistration.setDelayDev(5);
-        Despose despose = new Despose("Despose", "exp", 0.0);
+        ChangingProcess returningToRegistrationProcess = new ChangingProcess("Returning to registration from laboratory", "unif", 2, 1000, Integer.MAX_VALUE);
+        returningToRegistrationProcess.setDelayDev(5);
+        Process despose = new Process("Despose", "exp", 0.0, 1000, Integer.MAX_VALUE);
 
         typeCreate.setNextElement(registrationProcess);
         registrationProcess.setNextElementsForTypes(asList(patientWardProcess, patientLaboratoryProcess, patientLaboratoryProcess));
-        patientWardProcess.setNextElements(asList(despose));
-        patientLaboratoryProcess.setNextElements(asList(laboratoryRegistrationProcess));
-        laboratoryRegistrationProcess.setNextElements(asList(analyzeInLaboratoryProcess));
-        analyzeInLaboratoryProcess.setNextElementsForTypes(asList(despose, despose, returningToRegistration));
-        returningToRegistration.setNextElements(asList(registrationProcess));
+        patientWardProcess.setNextElement(despose);
+        patientLaboratoryProcess.setNextElement(laboratoryRegistrationProcess);
+        laboratoryRegistrationProcess.setNextElement(analyzeInLaboratoryProcess);
+        analyzeInLaboratoryProcess.setNextElementsForTypes(asList(despose, returningToRegistrationProcess, despose));
+        returningToRegistrationProcess.setNextElement(registrationProcess);
 
 
         ArrayList<Element> list = new ArrayList<>(asList(
                 typeCreate,
                 registrationProcess,
                 patientWardProcess,
-                patientLaboratoryProcess
+                patientLaboratoryProcess,
+                laboratoryRegistrationProcess,
+                analyzeInLaboratoryProcess,
+                returningToRegistrationProcess,
+                despose
         ));
         Model model = new Model(list);
         model.simulate(1000.0);

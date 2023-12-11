@@ -23,9 +23,6 @@ public class Model {
                     event = e.getId();
                 }
             }
-//            System.out.println("\nIt's time for event in "
-//                    + list.get(event).getName()
-//                    + ", time = " + tnext);
             for (Element e : list) {
                 e.doStatistics(tnext - tcurr);
             }
@@ -38,7 +35,7 @@ public class Model {
                     e.outAct();
                 }
             }
-            printInfo();
+//            printInfo();
         }
         printResult();
     }
@@ -51,6 +48,14 @@ public class Model {
         System.out.println("\n-------------RESULTS-------------");
         for (Element e : list) {
             e.printResult();
+            if (e instanceof TypeCreate c) {
+                ArrayList<Integer> q = c.getTypeQuantity();
+                System.out.println(
+                        "patient type 1 = " + q.get(0)
+                        + "\npatient type 2 = " + q.get(1)
+                        + "\npatient type 3 = " + q.get(2)
+                );
+            }
             if (e instanceof Process p) {
                 System.out.println("mean length of queue = "
                         + p.getMeanQueue() / tcurr

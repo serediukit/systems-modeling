@@ -56,11 +56,12 @@ public class TypeProcess extends Process {
             }
         }
 
-        if (super.nextElements.size() > 1)
-            super.setNextElement(nextElements.get(nextType));
-
-        if (super.getNextElement() != null)
-            super.getNextElement().inAct(0);
+        if (nextElements.size() > 1) {
+            getNextElements().get(nextType).inAct(nextType);
+        }
+        if (super.getNextElement() != null) {
+            super.getNextElement().inAct(nextType);
+        }
     }
 
     public void setDelayForTypes(List<Double> delays) {

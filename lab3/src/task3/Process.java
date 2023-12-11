@@ -72,17 +72,18 @@ public class Process extends Element {
             }
         }
 
-        if (nextElements.size() > 1)
-            super.setNextElement(nextElements.get(nextType));
-
-        if (super.getNextElement() != null)
+        if (nextElements.size() > 1) {
+            getNextElements().get(nextType).inAct(nextType);
+        }
+        if (super.getNextElement() != null) {
             super.getNextElement().inAct(nextType);
+        }
     }
 
-    @Override
-    public Element getNextElement() {
-        return nextElements.get(0);
-    }
+//    @Override
+//    public Element getNextElement() {
+//        return nextElements.get(0);
+//    }
 
     public int getFailure() {
         return failure;
