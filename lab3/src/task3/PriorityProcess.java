@@ -1,5 +1,6 @@
+package task3;
+
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class PriorityProcess extends Process {
     private final ArrayList<Integer> nextElementsPriority = new ArrayList<>();

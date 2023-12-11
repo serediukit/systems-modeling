@@ -1,3 +1,5 @@
+package task3;
+
 import java.util.Random;
 
 public class FunRand {
@@ -47,5 +49,13 @@ public class FunRand {
         Random r = new Random();
         a = timeMean + timeDeviation * r.nextGaussian();
         return a;
+    }
+
+    public static double Erlang(double timeMean, double k) {
+        double r = 1;
+        while (k-- > 0) {
+            r *= Math.random();
+        }
+        return -timeMean * Math.log(r);
     }
 }

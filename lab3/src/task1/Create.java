@@ -3,7 +3,7 @@ package task1;
 public class Create extends Element {
     public Create(String name, String distribution, double delay) {
         super(name, distribution, delay);
-        super.setTnext(0.0); // імітація розпочнеться з події Create
+        super.setTnext(0.0); // імітація розпочнеться з події task3.Create
     }
 
     @Override
