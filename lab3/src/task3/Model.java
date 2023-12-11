@@ -1,6 +1,7 @@
 package task3;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Model {
     private ArrayList<Element> list;
@@ -51,10 +52,16 @@ public class Model {
         System.out.println("patient type 2 = " + Result.patientQuantity[1]);
         System.out.println("patient type 3 = " + Result.patientQuantity[2]);
         System.out.println();
-        System.out.println("Average time for each type of patient:");
+        System.out.println("Average time in hospital for each type of patient:");
         System.out.println("patient type 1 = " + Result.time[0] / Result.patientQuantity[0]);
         System.out.println("patient type 2 = " + Result.time[1] / Result.patientQuantity[1]);
         System.out.println("patient type 3 = " + Result.time[2] / Result.patientQuantity[2]);
+        System.out.println();
+        System.out.println("Average interval between coming to laboratory:");
+        System.out.println("interval = " + Result.timeInLab / Result.patientInLab);
+
+        System.out.println(Arrays.stream(Result.time).sum() / Arrays.stream(Result.patientQuantity).sum());
+
 //        System.out.println("\n-------------RESULTS-------------");
 //        for (Element e : list) {
 //            e.printResult();

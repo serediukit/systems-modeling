@@ -5,4 +5,5 @@ public class Result {
     public static double[] time = {.0, .0, .0};
     public static double timeInLab = .0;
     public static int patientInLab = 0;
+    public static double lastTimeComingInLab = .0;
 }

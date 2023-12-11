@@ -27,7 +27,7 @@ public class Process extends Element {
         queue = 0;
         this.maxqueue = maxqueue;
         meanQueue = 0.0;
-        typeQueues = new ArrayList<>(Collections.nCopies(3, 0));
+        typeQueues = new ArrayList<>(Collections.nCopies(4, 0));
     }
     @Override
     public void inAct(int type) {
@@ -36,7 +36,7 @@ public class Process extends Element {
             if (stateOfProcesses.get(i) == 0) {
                 stateOfProcesses.set(i, type + 1);
                 double tempDelay = super.getDelay();
-                Result.time[type] += tempDelay;
+                Result.time[type > 2 ? 1 : type] += tempDelay;
                 tnextOfProcesses.set(i, super.getTcurr() + tempDelay);
                 setTnext();
                 isFind = true;
@@ -66,7 +66,7 @@ public class Process extends Element {
                         typeQueues.set(j, typeQueues.get(j) - 1);
                         stateOfProcesses.set(i, j + 1);
                         double tempDelay = getDelay();
-                        Result.time[j] += tempDelay;
+                        Result.time[j > 2 ? 1 : j] += tempDelay;
                         tnextOfProcesses.set(i, super.getTcurr() + tempDelay);
                         setTnext();
                         break;
@@ -77,9 +77,8 @@ public class Process extends Element {
         }
 
         if (nextElements.size() > 1) {
-            getNextElements().get(nextType).inAct(nextType);
-        }
-        if (super.getNextElement() != null) {
+            getNextElements().get(nextType % 3).inAct(nextType);
+        } else if (super.getNextElement() != null) {
             super.getNextElement().inAct(nextType);
         }
     }
@@ -101,7 +100,9 @@ public class Process extends Element {
 
     @Override
     public void doStatistics(double delta) {
-        meanQueue += queue * delta;
+        for (int type = 0; type < typeQueues.size(); type++) {
+            Result.time[type > 2 ? 1 : type] += typeQueues.get(type) * delta;
+        }
     }
 
     public double getMeanQueue() {

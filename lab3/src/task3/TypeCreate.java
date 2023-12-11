@@ -15,7 +15,7 @@ public class TypeCreate extends Create {
 
     @Override
     public void outAct() {
-        super.outAct();
+        super.quantity++;
         lastCreatedType = getType();
         Result.patientQuantity[lastCreatedType]++;
         typeQuantity.set(lastCreatedType, typeQuantity.get(lastCreatedType) + 1);
