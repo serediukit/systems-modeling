@@ -35,7 +35,9 @@ public class Process extends Element {
         for (int i = 0; i < countOfProcesses; i++) {
             if (stateOfProcesses.get(i) == 0) {
                 stateOfProcesses.set(i, type + 1);
-                tnextOfProcesses.set(i, super.getTcurr() + super.getDelay());
+                double tempDelay = super.getDelay();
+                Result.time[type] += tempDelay;
+                tnextOfProcesses.set(i, super.getTcurr() + tempDelay);
                 setTnext();
                 isFind = true;
                 break;
@@ -63,7 +65,9 @@ public class Process extends Element {
                     if (typeQueues.get(j) > 0) {
                         typeQueues.set(j, typeQueues.get(j) - 1);
                         stateOfProcesses.set(i, j + 1);
-                        tnextOfProcesses.set(i, super.getTcurr() + getDelay());
+                        double tempDelay = getDelay();
+                        Result.time[j] += tempDelay;
+                        tnextOfProcesses.set(i, super.getTcurr() + tempDelay);
                         setTnext();
                         break;
                     }

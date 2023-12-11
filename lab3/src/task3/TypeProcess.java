@@ -18,7 +18,9 @@ public class TypeProcess extends Process {
         for (int i = 0; i < countOfProcesses; i++) {
             if (stateOfProcesses.get(i) == 0) {
                 stateOfProcesses.set(i, type + 1);
-                tnextOfProcesses.set(i, super.getTcurr() + getDelayForType(type));
+                double tempDelay = getDelayForType(type);
+                Result.time[type] += tempDelay;
+                tnextOfProcesses.set(i, super.getTcurr() + tempDelay);
                 setTnext();
                 isFind = true;
                 break;
@@ -47,7 +49,9 @@ public class TypeProcess extends Process {
                     if (typeQueue.get(j) > 0) {
                         typeQueue.set(j, typeQueue.get(j) - 1);
                         stateOfProcesses.set(i, j + 1);
-                        tnextOfProcesses.set(i, super.getTcurr() + getDelayForType(j));
+                        double tempDelay = getDelayForType(j);
+                        Result.time[j] += tempDelay;
+                        tnextOfProcesses.set(i, super.getTcurr() + tempDelay);
                         setTnext();
                         break;
                     }

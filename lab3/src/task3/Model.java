@@ -45,25 +45,35 @@ public class Model {
         }
     }
     public void printResult() {
-        System.out.println("\n-------------RESULTS-------------");
-        for (Element e : list) {
-            e.printResult();
-            if (e instanceof TypeCreate c) {
-                ArrayList<Integer> q = c.getTypeQuantity();
-                System.out.println(
-                        "patient type 1 = " + q.get(0)
-                        + "\npatient type 2 = " + q.get(1)
-                        + "\npatient type 3 = " + q.get(2)
-                );
-            }
-            if (e instanceof Process p) {
-                System.out.println("mean length of queue = "
-                        + p.getMeanQueue() / tcurr
-                        + "\nfailure probability = "
-                        + p.getFailure() / (double) p.getQuantity()
-                );
-            }
-            System.out.println();
-        }
+        System.out.println("\n-------------RESULTS-------------\n");
+        System.out.println("Created:");
+        System.out.println("patient type 1 = " + Result.patientQuantity[0]);
+        System.out.println("patient type 2 = " + Result.patientQuantity[1]);
+        System.out.println("patient type 3 = " + Result.patientQuantity[2]);
+        System.out.println();
+        System.out.println("Average time for each type of patient:");
+        System.out.println("patient type 1 = " + Result.time[0] / Result.patientQuantity[0]);
+        System.out.println("patient type 2 = " + Result.time[1] / Result.patientQuantity[1]);
+        System.out.println("patient type 3 = " + Result.time[2] / Result.patientQuantity[2]);
+//        System.out.println("\n-------------RESULTS-------------");
+//        for (Element e : list) {
+//            e.printResult();
+//            if (e instanceof TypeCreate c) {
+//                ArrayList<Integer> q = c.getTypeQuantity();
+//                System.out.println(
+//                        "patient type 1 = " + q.get(0)
+//                        + "\npatient type 2 = " + q.get(1)
+//                        + "\npatient type 3 = " + q.get(2)
+//                );
+//            }
+//            if (e instanceof Process p) {
+//                System.out.println("mean length of queue = "
+//                        + p.getMeanQueue() / tcurr
+//                        + "\nfailure probability = "
+//                        + p.getFailure() / (double) p.getQuantity()
+//                );
+//            }
+//            System.out.println();
+//        }
     }
 }

@@ -17,7 +17,9 @@ public class ChangingProcess extends Process {
                     if (typeQueues.get(j) > 0) {
                         typeQueues.set(j, typeQueues.get(j) - 1);
                         stateOfProcesses.set(i, j + 1);
-                        tnextOfProcesses.set(i, super.getTcurr() + getDelay());
+                        double tempDelay = getDelay();
+                        Result.time[j] += tempDelay;
+                        tnextOfProcesses.set(i, super.getTcurr() + tempDelay);
                         setTnext();
                         break;
                     }
@@ -30,6 +32,6 @@ public class ChangingProcess extends Process {
             super.setNextElement(nextElements.get(0));
 
         if (super.getNextElement() != null)
-            super.getNextElement().inAct(1);
+            super.getNextElement().inAct(0);
     }
 }

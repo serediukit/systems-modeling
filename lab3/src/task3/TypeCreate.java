@@ -17,6 +17,7 @@ public class TypeCreate extends Create {
     public void outAct() {
         super.outAct();
         lastCreatedType = getType();
+        Result.patientQuantity[lastCreatedType]++;
         typeQuantity.set(lastCreatedType, typeQuantity.get(lastCreatedType) + 1);
         super.setTnext(super.getTcurr() + super.getDelay());
         if (super.getNextElement() != null) {
