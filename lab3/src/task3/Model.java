@@ -60,27 +60,27 @@ public class Model {
         System.out.println("Average interval between coming to laboratory:");
         System.out.println("interval = " + Result.timeInLab / Result.patientInLab);
 
-        System.out.println(Arrays.stream(Result.time).sum() / Arrays.stream(Result.patientQuantity).sum());
+//        System.out.println(Arrays.stream(Result.time).sum() / Arrays.stream(Result.patientQuantity).sum());
 
-//        System.out.println("\n-------------RESULTS-------------");
-//        for (Element e : list) {
-//            e.printResult();
-//            if (e instanceof TypeCreate c) {
-//                ArrayList<Integer> q = c.getTypeQuantity();
-//                System.out.println(
-//                        "patient type 1 = " + q.get(0)
-//                        + "\npatient type 2 = " + q.get(1)
-//                        + "\npatient type 3 = " + q.get(2)
-//                );
-//            }
-//            if (e instanceof Process p) {
-//                System.out.println("mean length of queue = "
-//                        + p.getMeanQueue() / tcurr
-//                        + "\nfailure probability = "
-//                        + p.getFailure() / (double) p.getQuantity()
-//                );
-//            }
-//            System.out.println();
-//        }
+        System.out.println("\n-------------RESULTS-------------");
+        for (Element e : list) {
+            e.printResult();
+            if (e instanceof TypeCreate c) {
+                ArrayList<Integer> q = c.getTypeQuantity();
+                System.out.println(
+                        "patient type 1 = " + q.get(0)
+                        + "\npatient type 2 = " + q.get(1)
+                        + "\npatient type 3 = " + q.get(2)
+                );
+            }
+            if (e instanceof Process p) {
+                System.out.println("mean length of queue = "
+                        + p.getMeanQueue() / tcurr
+                        + "\nfailure probability = "
+                        + p.getFailure() / (double) p.getQuantity()
+                );
+            }
+            System.out.println();
+        }
     }
 }
