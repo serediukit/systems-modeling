@@ -21,9 +21,9 @@ public class Model {
                     event = e.getId();
                 }
             }
-            System.out.println("\nIt's time for event in "
-                    + list.get(event).getName()
-                    + ", time = " + tnext);
+//            System.out.println("\nIt's time for event in "
+//                    + list.get(event).getName()
+//                    + ", time = " + tnext);
             for (Element e : list) {
                 e.doStatistics(tnext - tcurr);
             }
@@ -36,9 +36,9 @@ public class Model {
                     e.outAct();
                 }
             }
-            printInfo();
+//            printInfo();
         }
-        printResult();
+//        printResult();
     }
     public void printInfo() {
         for (Element e: list) {

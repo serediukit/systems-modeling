@@ -6,21 +6,25 @@ public class Process extends Element {
     private int maxqueue;
     private int failure;
     private double meanQueue;
-    private final double countOfProcesses;
-    private ArrayList<Integer> stateOfProcesses = new ArrayList<>();
-    private ArrayList<Double> tnextOfProcesses = new ArrayList<>();
-    private ArrayList<Element> nextElements = new ArrayList<>();
-    private ArrayList<Double> nextElementsChances = new ArrayList<>();
-    public Process(String name, double delay, int countOfProcesses) {
-        super(name, delay);
+    private final int countOfProcesses;
+    private final ArrayList<Integer> stateOfProcesses = new ArrayList<>();
+    private final ArrayList<Double> tnextOfProcesses = new ArrayList<>();
+    private final ArrayList<Element> nextElements = new ArrayList<>();
+    public double totalTime = 0;
+    public double totalExitTime = 0;
+    private double lastExitTime = 0;
+
+
+    public Process(String name, String distribution, double delay, int countOfProcesses, int maxqueue) {
+        super(name, distribution, delay);
         this.countOfProcesses = countOfProcesses;
         while (countOfProcesses-- > 0) {
             stateOfProcesses.add(0);
             tnextOfProcesses.add(Double.MAX_VALUE);
         }
-        setTnext();
+        setTnextForAllProcesses();
         queue = 0;
-        maxqueue = Integer.MAX_VALUE;
+        this.maxqueue = maxqueue;
         meanQueue = 0.0;
     }
     @Override
@@ -29,8 +33,10 @@ public class Process extends Element {
         for (int i = 0; i < countOfProcesses; i++) {
             if (stateOfProcesses.get(i) == 0) {
                 stateOfProcesses.set(i, 1);
-                tnextOfProcesses.set(i, super.getTcurr() + super.getDelay());
-                setTnext();
+                double delay = super.getDelay();
+                tnextOfProcesses.set(i, super.getTcurr() + delay);
+                totalTime += delay;
+                setTnextForAllProcesses();
                 isFind = true;
                 break;
             }
@@ -46,23 +52,24 @@ public class Process extends Element {
     @Override
     public void outAct() {
         super.outAct();
+        totalExitTime += super.getTcurr() - lastExitTime;
+        lastExitTime = super.getTcurr();
         for (int i = 0; i < countOfProcesses; i++) {
             if (tnextOfProcesses.get(i) == super.getTcurr()) {
                 stateOfProcesses.set(i, 0);
                 tnextOfProcesses.set(i, Double.MAX_VALUE);
-                setTnext();
+                setTnextForAllProcesses();
                 if (queue > 0) {
                     queue--;
                     stateOfProcesses.set(i, 1);
                     tnextOfProcesses.set(i, super.getTcurr() + super.getDelay());
-                    setTnext();
+                    setTnextForAllProcesses();
                 }
                 break;
             }
         }
         if (nextElements.size() > 1) {
-            Element element = getRandomElement();
-            System.out.println("Choosing " + element.getName());
+            Element element = getNextElement();
             super.setNextElement(element);
         }
 
@@ -70,26 +77,34 @@ public class Process extends Element {
             super.getNextElement().inAct();
     }
 
+    @Override
+    public Element getNextElement() {
+        for (Element e : nextElements)
+            if (e.getState() == 0)
+                return e;
+        return nextElements.get(0);
+    }
+
     public int getFailure() {
         return failure;
     }
-    public void setMaxqueue(int maxqueue) {
-        this.maxqueue = maxqueue;
-    }
+
     @Override
     public void printInfo() {
-        super.printInfo();
-        System.out.println("failure = " + this.getFailure());
+//        super.printInfo();
+//        System.out.println("failure = " + this.getFailure());
     }
+
     @Override
     public void doStatistics(double delta) {
         meanQueue += queue * delta;
     }
+
     public double getMeanQueue() {
         return meanQueue;
     }
 
-    private void setTnext() {
+    private void setTnextForAllProcesses() {
         super.setTnext(tnextOfProcesses
                 .stream()
                 .mapToDouble(x -> x)
@@ -103,20 +118,34 @@ public class Process extends Element {
             super.setNextElement(nextElements.get(0));
     }
 
-    public void setNextElementsChances(List<Double> nextElementsChances) {
-        this.nextElementsChances.addAll(nextElementsChances);
+    public ArrayList<Element> getNextElements() {
+        return nextElements;
+    }
+    public int getQueue() {
+        return queue;
+    }
+    public int getMaxqueue() {
+        return maxqueue;
     }
 
-    public Element getRandomElement() {
-        if (nextElements.size() != nextElementsChances.size())
-            return nextElements.get(0);
-        double totalChance = 0;
-        double chance = Math.random();
-        for (int i = 0; i < nextElementsChances.size(); i++) {
-            totalChance += nextElementsChances.get(i);
-            if (chance <= totalChance)
-                return nextElements.get(i);
+    public boolean isFree() {
+        for (Integer state : stateOfProcesses) {
+            if (state == 0)
+                return true;
         }
-        return nextElements.get(0);
+        return false;
+    }
+
+    public void setStateOfProcesses(int state) {
+        stateOfProcesses.replaceAll(ignored -> state);
+    }
+
+    public void setTnextOfProcesses(double tnext) {
+        tnextOfProcesses.replaceAll(ignored -> tnext);
+        setTnextForAllProcesses();
+    }
+
+    public void setQueue(int queue) {
+        this.queue = queue;
     }
 }
