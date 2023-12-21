@@ -18,8 +18,6 @@ public class Create extends Element {
                 next.inAct();
                 queue--;
             }
-            if (queue > 0)
-                System.out.println("CREATE QUEUE = " + queue + " at time = " + getTimeCurrent());
         }
     }
 

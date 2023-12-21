@@ -23,6 +23,6 @@ public class AirportSystem {
         List<Element> list = new ArrayList<>(List.of(creator));
         list.addAll(asList(planes));
         Model model = new Model(list);
-        model.simulate(1000);
+        model.simulate(10000);
     }
 }
