@@ -7,11 +7,11 @@ public class AirportSystem {
     public static void main(String[] args) {
         Create creator = new Create("CREATOR", "number", 0.5, 0);
         Process[] planes = new Process[] {
-                new Process("PLANE TYPE 1 NUM 1", "unif", 120, 240),
-                new Process("PLANE TYPE 1 NUM 2", "unif", 120, 240),
-                new Process("PLANE TYPE 1 NUM 3", "unif", 120, 240),
-                new Process("PLANE TYPE 2 NUM 1", "unif", 120, 240),
-                new Process("PLANE TYPE 2 NUM 2", "unif", 120, 240)
+                new Process("PLANE TYPE 80 NUM 1", "unif", 120, 240),
+                new Process("PLANE TYPE 80 NUM 2", "unif", 120, 240),
+                new Process("PLANE TYPE 80 NUM 3", "unif", 120, 240),
+                new Process("PLANE TYPE 140 NUM 1", "unif", 120, 240),
+                new Process("PLANE TYPE 140 NUM 2", "unif", 120, 240)
         };
         planes[0].setMaxQueue(80);
         planes[1].setMaxQueue(80);
@@ -23,5 +23,6 @@ public class AirportSystem {
         list.addAll(asList(planes));
         Model model = new Model(list);
         model.simulate(1000);
+        System.out.println(list.stream().map(Element::getName).toList());
     }
 }

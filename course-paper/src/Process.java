@@ -17,16 +17,14 @@ public class Process extends Element {
 
     @Override
     public void inAct() {
-        if (getState() == 0) {
+        if (getState() == 0 && queue >= maxQueue) {
             queue -= maxQueue;
             setState(1);
             setTimeNext(getTimeCurrent() + getDelay());
+        } else if (queue < maxQueue) {
+            queue++;
         } else {
-            if (queue < maxQueue) {
-                queue++;
-            } else {
-                failure++;
-            }
+            failure++;
         }
     }
 
@@ -35,8 +33,8 @@ public class Process extends Element {
         super.outAct();
         setTimeNext(Double.MAX_VALUE);
         setState(0);
-        if (queue > 0) {
-            queue--;
+        if (queue >= maxQueue) {
+            queue -= maxQueue;
             setState(1);
             setTimeNext(getTimeCurrent() + getDelay());
         }

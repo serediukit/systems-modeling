@@ -1,4 +1,5 @@
 public class Create extends Element {
+    private Process nextElement;
     public Create(String name, String distribution, double delayMean, double delayDev) {
         super(name, distribution, delayMean, delayDev);
     }
@@ -14,11 +15,20 @@ public class Create extends Element {
 
     @Override
     public Element getNextElement() {
-        for (Process p : getNextElements()) {
-            if (p.getQueue() < p.getMaxQueue() && p.getState() == 0) {
-                return p;
+        if (nextElement == null) {
+            nextElement = getNextElements().get(0);
+            System.out.println("Choosing " + nextElement.getName());
+            return nextElement;
+        }
+        if (nextElement.getQueue() == nextElement.getMaxQueue() || nextElement.getState() == 1) {
+            for (Process p : getNextElements()) {
+                if (p.getQueue() < p.getMaxQueue() && p.getState() == 0) {
+                    nextElement = p;
+                    System.out.println("Choosing " + nextElement.getName());
+                    return nextElement;
+                }
             }
         }
-        return super.getNextElement();
+        return nextElement;
     }
 }

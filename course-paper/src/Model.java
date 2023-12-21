@@ -41,7 +41,7 @@ public class Model {
                 }
             }
 
-            printInfo();
+            //printInfo();
         }
         printResults();
     }
@@ -58,7 +58,7 @@ public class Model {
             e.printResult();
             if (e instanceof Process p) {
                 System.out.println("mean length of queue: " + p.getMeanQueue() / timeCurrent);
-                System.out.println("failure probability: " + p.getFailure() / p.getQuantity());
+                //System.out.println("failure probability: " + p.getFailure() / p.getQuantity());
             }
             System.out.println();
         }
