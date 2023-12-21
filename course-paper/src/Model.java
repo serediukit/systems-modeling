@@ -56,9 +56,13 @@ public class Model {
         System.out.println("\n---------------RESULTS---------------");
         for (Element e : elements) {
             e.printResult();
+            if (e instanceof Create c) {
+                System.out.println("mean length of queue: " + c.getMeanQueue() / timeCurrent);
+            }
             if (e instanceof Process p) {
+                System.out.println("total amount of containers: " + p.getQuantity() * p.getMaxQueue());
                 System.out.println("mean length of queue: " + p.getMeanQueue() / timeCurrent);
-                //System.out.println("failure probability: " + p.getFailure() / p.getQuantity());
+                System.out.println("failure probability: " + p.getFailure() / p.getQuantity());
             }
             System.out.println();
         }

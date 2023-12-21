@@ -17,8 +17,8 @@ public class Process extends Element {
 
     @Override
     public void inAct() {
-        if (getState() == 0 && queue >= maxQueue) {
-            queue -= maxQueue;
+        if (getState() == 0 && (queue + 1) >= maxQueue) {
+            queue = 0;
             setState(1);
             setTimeNext(getTimeCurrent() + getDelay());
         } else if (queue < maxQueue) {
@@ -33,8 +33,8 @@ public class Process extends Element {
         super.outAct();
         setTimeNext(Double.MAX_VALUE);
         setState(0);
-        if (queue >= maxQueue) {
-            queue -= maxQueue;
+        if (queue == maxQueue) {
+            queue = 0;
             setState(1);
             setTimeNext(getTimeCurrent() + getDelay());
         }

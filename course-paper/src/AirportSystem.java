@@ -5,7 +5,8 @@ import static java.util.Arrays.asList;
 
 public class AirportSystem {
     public static void main(String[] args) {
-        Create creator = new Create("CREATOR", "number", 0.5, 0);
+        Create creator = new Create("CREATOR", "number", .5, 0);
+        creator.setTimeNext(.5);
         Process[] planes = new Process[] {
                 new Process("PLANE TYPE 80 NUM 1", "unif", 120, 240),
                 new Process("PLANE TYPE 80 NUM 2", "unif", 120, 240),
@@ -23,6 +24,5 @@ public class AirportSystem {
         list.addAll(asList(planes));
         Model model = new Model(list);
         model.simulate(1000);
-        System.out.println(list.stream().map(Element::getName).toList());
     }
 }
