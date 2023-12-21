@@ -14,7 +14,7 @@ public class Element {
     private int state;
     private double timeNext;
     private double timeCurrent;
-    private List<Element> nextElements;
+    private List<Process> nextElements;
 
     public Element(String name, String distribution, double delayMean, double delayDev) {
         this.name = name;
@@ -75,11 +75,11 @@ public class Element {
         this.timeCurrent = timeCurrent;
     }
 
-    public List<Element> getNextElements() {
+    public List<Process> getNextElements() {
         return nextElements;
     }
 
-    public void setNextElements(ArrayList<Element> nextElements) {
+    public void setNextElements(List<Process> nextElements) {
         this.nextElements = new ArrayList<>(nextElements);
     }
 

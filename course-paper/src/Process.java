@@ -18,6 +18,7 @@ public class Process extends Element {
     @Override
     public void inAct() {
         if (getState() == 0) {
+            queue -= maxQueue;
             setState(1);
             setTimeNext(getTimeCurrent() + getDelay());
         } else {
@@ -39,10 +40,25 @@ public class Process extends Element {
             setState(1);
             setTimeNext(getTimeCurrent() + getDelay());
         }
+        if (getNextElements() != null) {
+            getNextElement().inAct();
+        }
+    }
+
+    public int getMaxQueue() {
+        return maxQueue;
     }
 
     public void setMaxQueue(int maxQueue) {
         this.maxQueue = maxQueue;
+    }
+
+    public int getQueue() {
+        return queue;
+    }
+
+    public void increaseQueue() {
+        queue++;
     }
 
     public int getFailure() {
@@ -56,7 +72,7 @@ public class Process extends Element {
     @Override
     public void printInfo() {
         super.printInfo();
-        System.out.println("failure: " + failure + "\n");
+        System.out.println("failure: " + failure);
     }
 
     @Override

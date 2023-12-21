@@ -1,5 +1,27 @@
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
 public class AirportSystem {
     public static void main(String[] args) {
-        System.out.println("Starting the program");
+        Create creator = new Create("CREATOR", "number", 0.5, 0);
+        Process[] planes = new Process[] {
+                new Process("PLANE TYPE 1 NUM 1", "unif", 120, 240),
+                new Process("PLANE TYPE 1 NUM 2", "unif", 120, 240),
+                new Process("PLANE TYPE 1 NUM 3", "unif", 120, 240),
+                new Process("PLANE TYPE 2 NUM 1", "unif", 120, 240),
+                new Process("PLANE TYPE 2 NUM 2", "unif", 120, 240)
+        };
+        planes[0].setMaxQueue(80);
+        planes[1].setMaxQueue(80);
+        planes[2].setMaxQueue(80);
+        planes[3].setMaxQueue(140);
+        planes[4].setMaxQueue(140);
+        creator.setNextElements(asList(planes));
+        List<Element> list = new ArrayList<>(List.of(creator));
+        list.addAll(asList(planes));
+        Model model = new Model(list);
+        model.simulate(1000);
     }
 }

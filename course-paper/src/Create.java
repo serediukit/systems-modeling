@@ -7,7 +7,18 @@ public class Create extends Element {
     public void outAct() {
         super.outAct();
         setTimeNext(getTimeCurrent() + getDelay());
-        if (getNextElements() != null)
+        if (getNextElements() != null) {
             getNextElement().inAct();
+        }
+    }
+
+    @Override
+    public Element getNextElement() {
+        for (Process p : getNextElements()) {
+            if (p.getQueue() < p.getMaxQueue() && p.getState() == 0) {
+                return p;
+            }
+        }
+        return super.getNextElement();
     }
 }
