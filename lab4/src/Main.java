@@ -7,6 +7,7 @@ import static java.util.Arrays.*;
 
 public class Main {
     public static void main(String[] args) {
+//        int testType = 1;
         int testType = 2;
         int testCount = 10;
         Map<Integer, Double> results = new HashMap<>();
