@@ -8,17 +8,12 @@ public class AirportSystem {
         Create creator = new Create("CREATOR", "number", .5, 0);
         creator.setTimeNext(.5);
         Process[] planes = new Process[] {
-                new Process("PLANE TYPE 80 NUM 1", "unif", 120, 240),
-                new Process("PLANE TYPE 80 NUM 2", "unif", 120, 240),
-                new Process("PLANE TYPE 80 NUM 3", "unif", 120, 240),
-                new Process("PLANE TYPE 140 NUM 1", "unif", 120, 240),
-                new Process("PLANE TYPE 140 NUM 2", "unif", 120, 240)
+                new Process("PLANE TYPE 80 NUM 1", "norm", 180, 60, 80),
+                new Process("PLANE TYPE 80 NUM 2", "norm", 180, 60, 80),
+                new Process("PLANE TYPE 80 NUM 3", "norm", 180, 60, 80),
+                new Process("PLANE TYPE 140 NUM 1", "norm", 180, 60, 140),
+                new Process("PLANE TYPE 140 NUM 2", "norm", 180, 60, 140)
         };
-        planes[0].setMaxQueue(80);
-        planes[1].setMaxQueue(80);
-        planes[2].setMaxQueue(80);
-        planes[3].setMaxQueue(140);
-        planes[4].setMaxQueue(140);
         creator.setNextElements(asList(planes));
         List<Element> list = new ArrayList<>(List.of(creator));
         list.addAll(asList(planes));

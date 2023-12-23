@@ -44,6 +44,7 @@ public class Model {
             //printInfo();
         }
         printResults();
+        printResult();
     }
 
     private void printInfo() {
@@ -66,5 +67,32 @@ public class Model {
             }
             System.out.println();
         }
+    }
+
+    private void printResult() {
+        System.out.println();
+        System.out.println("+--------------------------------------------+");
+        System.out.println("|                   RESULT                   |");
+        System.out.println("+--------------------------------------------+");
+        System.out.println();
+        System.out.println("+--------------------------------------------+");
+        System.out.println("|            Average time waiting            |");
+        System.out.println("+------------------------------+-------------+");
+        for (Element e : elements) {
+            if (e instanceof Process p) {
+                System.out.printf("| %-28s | %11.6f |\n", p.getName(), p.getMeanTimeWaiting() / p.getWaitsCount());
+            }
+        }
+        System.out.println("+------------------------------+-------------+");
+        System.out.println();
+        System.out.println("+--------------------------------------------+");
+        System.out.println("|            Average time loading            |");
+        System.out.println("+------------------------------+-------------+");
+        for (Element e : elements) {
+            if (e instanceof Process p) {
+                System.out.printf("| %-28s | %11.8f |\n", p.getName(), p.getMeanTimeLoading() / timeCurrent);
+            }
+        }
+        System.out.println("+------------------------------+-------------+");
     }
 }

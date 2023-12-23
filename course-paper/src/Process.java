@@ -4,15 +4,20 @@ public class Process extends Element {
     protected int failure;
 
     private double meanQueue;
+    private double meanTimeLoading;
+    private double meanTimeWaiting;
+    private int waitsCount;
 
-    public Process(String name, String distribution, double delayMean, double delayDev) {
+    public Process(String name, String distribution, double delayMean, double delayDev, int maxQueue) {
         super(name, distribution, delayMean, delayDev);
+        this.maxQueue = maxQueue;
         setState(0);
         setTimeNext(Double.MAX_VALUE);
         queue = 0;
-        maxQueue = Integer.MAX_VALUE;
         failure = 0;
         meanQueue = 0;
+        meanTimeLoading = 0;
+        waitsCount = 1;
     }
 
     @Override
@@ -33,6 +38,7 @@ public class Process extends Element {
         super.outAct();
         setTimeNext(Double.MAX_VALUE);
         setState(0);
+        waitsCount++;
         if (queue == maxQueue) {
             queue = 0;
             setState(1);
@@ -55,16 +61,24 @@ public class Process extends Element {
         return queue;
     }
 
-    public void increaseQueue() {
-        queue++;
-    }
-
     public int getFailure() {
         return failure;
     }
 
     public double getMeanQueue() {
         return meanQueue;
+    }
+
+    public double getMeanTimeLoading() {
+        return meanTimeLoading;
+    }
+
+    public double getMeanTimeWaiting() {
+        return meanTimeWaiting;
+    }
+
+    public int getWaitsCount() {
+        return waitsCount;
     }
 
     @Override
@@ -76,5 +90,7 @@ public class Process extends Element {
     @Override
     public void doStatistic(double delta) {
         meanQueue += queue * delta;
+        meanTimeLoading += getState() * delta;
+        meanTimeWaiting += (1 - getState()) * delta;
     }
 }
