@@ -1,3 +1,5 @@
+package main;
+
 public class PlaneProcess extends Process {
     private double meanTimeLoading;
     private double meanTimeWaiting;

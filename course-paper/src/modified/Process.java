@@ -1,3 +1,5 @@
+package modified;
+
 public class Process extends Element {
     private double meanQueue;
 

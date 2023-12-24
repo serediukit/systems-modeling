@@ -1,3 +1,5 @@
+package modified;
+
 public class Create extends Element {
     private int queue = 0;
     private double meanQueue = 0;

@@ -1,3 +1,5 @@
+package modified;
+
 import java.util.Random;
 
 public class Rand {
