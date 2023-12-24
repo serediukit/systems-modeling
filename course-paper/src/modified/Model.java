@@ -40,8 +40,9 @@ public class Model {
                 }
             }
         }
-        printResults();
-        printResult();
+//        printResults();
+//        printResult();
+        printExperimentResult();
     }
 
     private void printInfo() {
@@ -91,5 +92,19 @@ public class Model {
             }
         }
         System.out.println("+------------------------------+-------------+");
+    }
+
+    public void printExperimentResult() {
+        for (Element e : elements) {
+            if (e instanceof PlaneProcess p) {
+                System.out.printf("%.4f,", p.getMeanTimeWaiting() / p.getWaitsCount());
+            }
+        }
+        for (Element e : elements) {
+            if (e instanceof PlaneProcess p) {
+                System.out.printf("%.4f,", p.getMeanTimeLoading() / timeCurrent);
+            }
+        }
+        System.out.println();
     }
 }
