@@ -19,7 +19,11 @@ public class AirportSystem {
         creator.setNextElements(asList(planes));
         List<Element> list = new ArrayList<>(List.of(creator));
         list.addAll(asList(planes));
+        IntervalStatisticSaver intervalStatisticSaver = new IntervalStatisticSaver("STATISTIC SAVER", "def", 500, 0);
+        intervalStatisticSaver.setPlanes(asList(planes));
+        list.add(intervalStatisticSaver);
         Model model = new Model(list);
-        model.simulate(10000);
+        model.simulate(30000);
+        intervalStatisticSaver.printStatistic();
     }
 }

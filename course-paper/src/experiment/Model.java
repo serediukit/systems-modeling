@@ -41,8 +41,8 @@ public class Model {
             }
 
         }
-        printResults();
-        printResult();
+//        printResults();
+//        printResult();
     }
 
     private void printInfo() {
