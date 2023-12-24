@@ -16,8 +16,12 @@ public class VerificationSystem {
                 new TestData(0.5, 80, 180, 60, 140, 360, 60, 0),
                 new TestData(0.5, 80, 180, 60, 140, 180, 60, 1)
         };
+        System.out.println("+-----------+----------+------------+----------+------------+-----------++-----------+-----------+---------------+---------------+---------------+---------------+---------------+---------------+---------------+---------------+---------------+---------------+");
+        System.out.println("| contDelay | capType1 | planeTime1 | capType2 | planeTime2 | convDelay || contCount | contMeanQ | planeWaitT1N1 | planeWaitT1N2 | planeWaitT1N3 | planeWaitT2N1 | planeWaitT2N2 | planeLoadT1N1 | planeLoadT1N2 | planeLoadT1N3 | planeLoadT2N1 | planeLoadT2N2 |");
+        System.out.println("+-----------+----------+------------+----------+------------+-----------++-----------+-----------+---------------+---------------+---------------+---------------+---------------+---------------+---------------+---------------+---------------+---------------+");
         for (TestData data : testData) {
             test(
+                    data,
                     data.containerDelay,
                     data.capacityType1,
                     data.planeDelay1,
@@ -28,9 +32,11 @@ public class VerificationSystem {
                     data.conveyorDelay
             );
         }
+        System.out.println("+-----------+----------+------------+----------+------------+-----------++-----------+-----------+---------------+---------------+---------------+---------------+---------------+---------------+---------------+---------------+---------------+---------------+");
     }
 
     public static void test(
+            TestData testData,
             double containerDelay,
             int capacityType1,
             double planeDelay1,
@@ -63,7 +69,7 @@ public class VerificationSystem {
         List<Element> list = new ArrayList<>(List.of(creator));
         list.addAll(asList(conveyors));
         list.addAll(asList(planes));
-        Model model = new Model(list);
+        Model model = new Model(list, testData);
         model.simulate(10000);
     }
 }

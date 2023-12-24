@@ -1,5 +1,6 @@
 package verification;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,9 +8,11 @@ public class Model {
     private double timeNext;
     private double timeCurrent;
     private final ArrayList<Element> elements;
+    private final TestData testData;
 
-    public Model(List<Element> elements) {
+    public Model(List<Element> elements, TestData testData) {
         this.elements = new ArrayList<>(elements);
+        this.testData = testData;
         timeNext = 0;
         timeCurrent = 0;
     }
@@ -41,7 +44,6 @@ public class Model {
             }
         }
         printResults();
-        printResult();
     }
 
     private void printInfo() {
@@ -51,19 +53,60 @@ public class Model {
     }
 
     private void printResults() {
-        System.out.println("\n---------------RESULTS---------------");
+        int contCount = 0;
+        double contMeanQ = 0;
+        double[] planeWait = new double[] {0, 0, 0, 0, 0};
+        double[] planeLoad = new double[] {0, 0, 0, 0, 0};
+        int pIndex = 0;
         for (Element e : elements) {
-            e.printResult();
             if (e instanceof Create c) {
-                System.out.println("mean length of queue: " + c.getMeanQueue() / timeCurrent);
+                contCount = c.getQuantity();
+                contMeanQ = c.getMeanQueue() / timeCurrent;
             }
-            if (e instanceof Process p) {
-                System.out.println("total amount of containers: " + p.getQuantity() * p.getMaxQueue());
-                System.out.println("mean length of queue: " + p.getMeanQueue() / timeCurrent);
-                System.out.println("failure probability: " + p.getFailure() / p.getQuantity());
+            if (e instanceof PlaneProcess p) {
+                planeWait[pIndex] = p.getMeanTimeWaiting() / p.getWaitsCount();
+                planeLoad[pIndex] = p.getMeanTimeLoading() / timeCurrent;
+                pIndex++;
             }
-            System.out.println();
         }
+        PrintStream printf = System.out.printf("| %9.2f " +
+                        "| %8d " +
+                        "| %10.2f " +
+                        "| %8d " +
+                        "| %10.2f " +
+                        "| %9.2f " +
+                        "|| %9d " +
+                        "| %9.3f " +
+                        "| %13.3f " +
+                        "| %13.3f " +
+                        "| %13.3f " +
+                        "| %13.3f " +
+                        "| %13.3f " +
+                        "| %13.3f " +
+                        "| %13.3f " +
+                        "| %13.3f " +
+                        "| %13.3f " +
+                        "| %13.3f |\n",
+                testData.containerDelay,
+                testData.capacityType1,
+                testData.planeDelay1,
+                testData.capacityType2,
+                testData.planeDelay2,
+                testData.conveyorDelay,
+                contCount,
+                contMeanQ,
+                planeWait[0],
+                planeWait[1],
+                planeWait[2],
+                planeWait[3],
+                planeWait[4],
+                planeLoad[0],
+                planeLoad[1],
+                planeLoad[2],
+                planeLoad[3],
+                planeLoad[4]
+        );
+
     }
 
     private void printResult() {
