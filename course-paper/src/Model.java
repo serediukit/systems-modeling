@@ -2,16 +2,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Model {
-    private int event;
     private double timeNext;
     private double timeCurrent;
-    private ArrayList<Element> elements;
+    private final ArrayList<Element> elements;
 
     public Model(List<Element> elements) {
         this.elements = new ArrayList<>(elements);
         timeNext = 0;
         timeCurrent = 0;
-        event = 0;
     }
 
     public void simulate(double timeSimulation) {
@@ -21,7 +19,6 @@ public class Model {
             for (Element e : elements) {
                 if (e.getTimeNext() < timeNext) {
                     timeNext = e.getTimeNext();
-                    event = e.getId();
                 }
             }
 
@@ -41,7 +38,7 @@ public class Model {
                 }
             }
 
-            //printInfo();
+//            printInfo();
         }
         printResults();
         printResult();
@@ -79,18 +76,18 @@ public class Model {
         System.out.println("|            Average time waiting            |");
         System.out.println("+------------------------------+-------------+");
         for (Element e : elements) {
-            if (e instanceof Process p) {
-                System.out.printf("| %-28s | %11.6f |\n", p.getName(), p.getMeanTimeWaiting() / p.getWaitsCount());
+            if (e instanceof PlaneProcess p) {
+                System.out.printf("| %-28s | %11.6f |\n", p.getId() + " " + p.getName(), p.getMeanTimeWaiting() / p.getWaitsCount());
             }
         }
         System.out.println("+------------------------------+-------------+");
         System.out.println();
         System.out.println("+--------------------------------------------+");
-        System.out.println("|            Average time loading            |");
+        System.out.println("|              Average loading               |");
         System.out.println("+------------------------------+-------------+");
         for (Element e : elements) {
-            if (e instanceof Process p) {
-                System.out.printf("| %-28s | %11.8f |\n", p.getName(), p.getMeanTimeLoading() / timeCurrent);
+            if (e instanceof PlaneProcess p) {
+                System.out.printf("| %-28s | %10.4f%% |\n", p.getId() + " " + p.getName(), p.getMeanTimeLoading() * 100 / timeCurrent);
             }
         }
         System.out.println("+------------------------------+-------------+");

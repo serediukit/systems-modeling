@@ -1,12 +1,9 @@
 public class Process extends Element {
+    private double meanQueue;
+
     protected int maxQueue;
     protected int queue;
     protected int failure;
-
-    private double meanQueue;
-    private double meanTimeLoading;
-    private double meanTimeWaiting;
-    private int waitsCount;
 
     public Process(String name, String distribution, double delayMean, double delayDev, int maxQueue) {
         super(name, distribution, delayMean, delayDev);
@@ -16,14 +13,11 @@ public class Process extends Element {
         queue = 0;
         failure = 0;
         meanQueue = 0;
-        meanTimeLoading = 0;
-        waitsCount = 1;
     }
 
     @Override
     public void inAct() {
-        if (getState() == 0 && (queue + 1) >= maxQueue) {
-            queue = 0;
+        if (getState() == 0) {
             setState(1);
             setTimeNext(getTimeCurrent() + getDelay());
         } else if (queue < maxQueue) {
@@ -38,9 +32,8 @@ public class Process extends Element {
         super.outAct();
         setTimeNext(Double.MAX_VALUE);
         setState(0);
-        waitsCount++;
-        if (queue == maxQueue) {
-            queue = 0;
+        if (queue > 0) {
+            queue--;
             setState(1);
             setTimeNext(getTimeCurrent() + getDelay());
         }
@@ -51,10 +44,6 @@ public class Process extends Element {
 
     public int getMaxQueue() {
         return maxQueue;
-    }
-
-    public void setMaxQueue(int maxQueue) {
-        this.maxQueue = maxQueue;
     }
 
     public int getQueue() {
@@ -69,18 +58,6 @@ public class Process extends Element {
         return meanQueue;
     }
 
-    public double getMeanTimeLoading() {
-        return meanTimeLoading;
-    }
-
-    public double getMeanTimeWaiting() {
-        return meanTimeWaiting;
-    }
-
-    public int getWaitsCount() {
-        return waitsCount;
-    }
-
     @Override
     public void printInfo() {
         super.printInfo();
@@ -90,7 +67,5 @@ public class Process extends Element {
     @Override
     public void doStatistic(double delta) {
         meanQueue += queue * delta;
-        meanTimeLoading += getState() * delta;
-        meanTimeWaiting += (1 - getState()) * delta;
     }
 }

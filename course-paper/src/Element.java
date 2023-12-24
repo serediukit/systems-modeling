@@ -10,11 +10,12 @@ public class Element {
     private final double delayMean;
     private final double delayDev;
 
-    private int quantity;
     private int state;
     private double timeNext;
     private double timeCurrent;
     private List<Process> nextElements;
+
+    protected int quantity;
 
     public Element(String name, String distribution, double delayMean, double delayDev) {
         this.name = name;
