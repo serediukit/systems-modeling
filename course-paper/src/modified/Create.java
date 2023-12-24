@@ -30,9 +30,9 @@ public class Create extends Element {
             nextElement = getNextElements().get(0);
             return nextElement;
         }
-        if (nextElement.getQueue() + nextElement.getQueueOfNextPlane() >= nextElement.getMaxQueue() || nextElement.getStateOfNextPlane() == 1) {
+        if (nextElement.getQueue() + nextElement.getQueueOfNextPlane() + nextElement.getState() >= nextElement.getMaxQueue() || nextElement.getStateOfNextPlane() == 1) {
             for (Process p : getNextElements()) {
-                if (p.getQueue() + p.getQueueOfNextPlane() < p.getMaxQueue() && p.getStateOfNextPlane() == 0) {
+                if (p.getQueue() + p.getQueueOfNextPlane() + p.getState() < p.getMaxQueue() && p.getStateOfNextPlane() == 0) {
                     nextElement = p;
                     return nextElement;
                 }
