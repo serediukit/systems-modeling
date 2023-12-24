@@ -66,6 +66,17 @@ public class Process extends Element {
         System.out.println("failure: " + failure);
     }
 
+    public int getQueueOfNextPlane() {
+        if (getNextElement() instanceof PlaneProcess p) {
+            return p.getQueue();
+        }
+        return 0;
+    }
+
+    public int getStateOfNextPlane() {
+        return getNextElement().getState();
+    }
+
     @Override
     public void doStatistic(double delta) {
         meanQueue += queue * delta;

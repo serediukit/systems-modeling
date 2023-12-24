@@ -39,7 +39,6 @@ public class Model {
                     e.outAct();
                 }
             }
-
         }
         printResults();
         printResult();
@@ -61,7 +60,7 @@ public class Model {
             if (e instanceof Process p) {
                 System.out.println("total amount of containers: " + p.getQuantity() * p.getMaxQueue());
                 System.out.println("mean length of queue: " + p.getMeanQueue() / timeCurrent);
-                System.out.println("failure probability: " + p.getFailure() / p.getQuantity());
+                System.out.println("failure probability: " + p.getFailure() );
             }
             System.out.println();
         }

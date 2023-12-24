@@ -1,7 +1,7 @@
 package modified;
 
 public class Create extends Element {
-    private int queue = 0;
+    public int queue = 0;
     private double meanQueue = 0;
     private Process nextElement;
 
@@ -15,9 +15,10 @@ public class Create extends Element {
         setTimeNext(getTimeCurrent() + getDelay());
         if (getNextElements() != null) {
             queue++;
-            Element next = getNextElement();
-            while (queue > 0 && next.getState() == 0) {
+            Process next = (Process) getNextElement();
+            while (queue > 0 && next.getStateOfNextPlane() == 0) {
                 next.inAct();
+                next = (Process) getNextElement();
                 queue--;
             }
         }
@@ -29,9 +30,9 @@ public class Create extends Element {
             nextElement = getNextElements().get(0);
             return nextElement;
         }
-        if (nextElement.getQueue() == nextElement.getMaxQueue() || nextElement.getState() == 1) {
+        if (nextElement.getQueue() + nextElement.getQueueOfNextPlane() >= nextElement.getMaxQueue() || nextElement.getStateOfNextPlane() == 1) {
             for (Process p : getNextElements()) {
-                if (p.getQueue() < p.getMaxQueue() && p.getState() == 0) {
+                if (p.getQueue() + p.getQueueOfNextPlane() < p.getMaxQueue() && p.getStateOfNextPlane() == 0) {
                     nextElement = p;
                     return nextElement;
                 }
