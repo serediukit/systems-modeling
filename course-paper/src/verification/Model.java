@@ -69,7 +69,7 @@ public class Model {
                 pIndex++;
             }
         }
-        PrintStream printf = System.out.printf("| %9.2f " +
+        System.out.printf("| %9.2f " +
                         "| %8d " +
                         "| %10.2f " +
                         "| %8d " +
@@ -106,7 +106,7 @@ public class Model {
                 planeLoad[3],
                 planeLoad[4]
         );
-
+        Result.meanLoadintFirstPlane += planeLoad[0];
     }
 
     private void printResult() {
