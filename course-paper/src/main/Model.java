@@ -41,9 +41,9 @@ public class Model {
             }
 
         }
-//        printResults();
-//        printResult();
-        printExperimentResult();
+        printResults();
+        printResult();
+//        printExperimentResult();
     }
 
     private void printInfo() {
